@@ -94,15 +94,10 @@ namespace test_2306
 
 
         }
-
+        Dictionary<string, string> ZhanTai = new Dictionary<string, string>();
         private void Form1_Load(object sender, EventArgs e)
         {
-
-        }
-
-        private void ChaXun_Click(object sender, EventArgs e)
-        {
-
+            ///////////////////////////////////////获取站台编码
             /// <summary>
             /// 获取页面html
             /// </summary>
@@ -110,7 +105,7 @@ namespace test_2306
             /// <param name="refererUri">来源url</param>
             /// <param name="encodingName">编码名称 例如：gb2312</param>
             /// <returns></returns>
-
+            //获取站台对应编码
             // string uri = "https://kyfw.12306.cn/otn/leftTicket/queryE?leftTicketDTO.train_date=2024-01-24&leftTicketDTO.from_station=SZQ&leftTicketDTO.to_station=HDP&purpose_codes=ADULT";
             string uri = "https://kyfw.12306.cn/otn/resources/js/framework/station_name.js?station_version=1.9297";
             string refererUri = uri;
@@ -152,58 +147,65 @@ namespace test_2306
                     }
                 }
             }
-            textBox1.Text = html_DiZhiBianMa;
+            //textBox1.Text = html_DiZhiBianMa;
 
-
-            string FormAddress = string.Empty;
-            string ToAddress = string.Empty;
-            int FormAddress_Length = textBox_ChuFaDi.TextLength;
-            int ToAddress_Length = textBox_MuDiDi.TextLength;
-            string BianMa1 = html_DiZhiBianMa;
-            while (true)
+            string[] ZhanTai_BianMas = html_DiZhiBianMa.Split('@');
+            foreach (string ZhanTai_BianMa in ZhanTai_BianMas)
             {
-                BianMa1 = BianMa1.Substring(BianMa1.IndexOf(textBox_ChuFaDi.Text + "|") + FormAddress_Length + 1);
-                if (Regex.IsMatch(BianMa1.Substring(0, 1), "[A-Z{3}]"))
+                string[] str = ZhanTai_BianMa.Split('|');
+                if (str.Length > 1)
                 {
-                    break;
+                    string KEY = str[1];
+                    string VALUE = str[2];
+                    ZhanTai.Add(KEY, VALUE);
                 }
             }
-            FormAddress = BianMa1.Substring(0, 3);
+        }
 
-            string BianMa2 = html_DiZhiBianMa;
-            while (true)
-            {
-                BianMa2 = BianMa2.Substring(BianMa2.IndexOf(textBox_MuDiDi.Text + "|") + ToAddress_Length + 1);
-                if (Regex.IsMatch(BianMa2.Substring(0, 1), "[A-Z{3}]"))
-                {
-                    break;
-                }
-            }
-            ToAddress = BianMa2.Substring(0, 3);
+        
+        private void ChaXun_Click(object sender, EventArgs e)
+        {
 
-            uri = "https://kyfw.12306.cn/otn/leftTicket/queryE?leftTicketDTO.train_date=" + dateTimePicker_ChuFaShiJian.Value.ToString("yyyy-MM-dd") + "&leftTicketDTO.from_station=" + FormAddress + "&leftTicketDTO.to_station=" + ToAddress + "&purpose_codes=ADULT";
-            refererUri = uri;
-            string html = string.Empty;
-            HttpWebRequest request_html = (HttpWebRequest)WebRequest.Create(uri);
-            request_html.ContentType = "text/html;charset=" + encodingName;
-            request_html.Method = "Get";
-            request_html.UserAgent = "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.26 Safari/537.36 Core/1.63.5221.400 QQBrowser/10.0.1125.400";
-            request_html.CookieContainer = cookieContainer;
+           
+            
+            string FormAddress = ZhanTai[textBox_ChuFaDi.Text] ;
+            string ToAddress = ZhanTai[textBox_MuDiDi.Text];
 
-            if (!string.IsNullOrEmpty(refererUri))
-                request_html.Referer = refererUri;
+            #region
+            /*
+             int FormAddress_Length = textBox_ChuFaDi.TextLength;
+             int ToAddress_Length = textBox_MuDiDi.TextLength;
+             string BianMa1 = html_DiZhiBianMa;
+             while (true)
+             {
+                 BianMa1 = BianMa1.Substring(BianMa1.IndexOf(textBox_ChuFaDi.Text + "|") + FormAddress_Length + 1);
+                 if (Regex.IsMatch(BianMa1.Substring(0, 1), "[A-Z{3}]"))
+                 {
+                     break;
+                 }
+             }
+             FormAddress = BianMa1.Substring(0, 3);
 
-            using (HttpWebResponse response = (HttpWebResponse)request_html.GetResponse())
-            {
-                using (Stream streamResponse = response.GetResponseStream())
-                {
-                    using (StreamReader streamResponseReader = new StreamReader(streamResponse, Encoding.GetEncoding(encodingName)))
-                    {
-                        html = streamResponseReader.ReadToEnd();
-                    }
-                }
-            }
-            textBox1.Text = html;
+             string BianMa2 = html_DiZhiBianMa;
+             while (true)
+             {
+                 BianMa2 = BianMa2.Substring(BianMa2.IndexOf(textBox_MuDiDi.Text + "|") + ToAddress_Length + 1);
+                 if (Regex.IsMatch(BianMa2.Substring(0, 1), "[A-Z{3}]"))
+                 {
+                     break;
+                 }
+             }
+             ToAddress = BianMa2.Substring(0, 3);
+            */
+            #endregion
+            string uri = "https://kyfw.12306.cn/otn/leftTicket/queryE?leftTicketDTO.train_date=" + dateTimePicker_ChuFaShiJian.Value.ToString("yyyy-MM-dd") + "&leftTicketDTO.from_station=" + FormAddress + "&leftTicketDTO.to_station=" + ToAddress + "&purpose_codes=ADULT";
+            string strHTML = "";
+            WebClient myWebClient = new WebClient();
+            Stream myStream = myWebClient.OpenRead(uri);
+            StreamReader sr = new StreamReader(myStream, System.Text.Encoding.GetEncoding("utf-8"));
+            strHTML = sr.ReadToEnd();
+            myStream.Close();
+            textBox1.Text= strHTML;
 
 
         }
