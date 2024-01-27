@@ -169,7 +169,9 @@ namespace test_2306
         
         private void ChaXun_Click(object sender, EventArgs e)
         {
-
+            //清除表格残留数据
+            listView1.Columns.Clear();
+            listView1.Items.Clear();
            
             
             string FormAddress = ZhanTai[textBox_ChuFaDi.Text] ;
@@ -213,7 +215,8 @@ namespace test_2306
             string data = obj["data"]["result"].ToString();
             string[] HuoCheInfos=data.Split(',');
             string s = "";
-            for(int i = 0;i < HuoCheInfos.Length;i++)
+            //j用来标志是第一次循环吗
+            for(int i = 0,j=1;i < HuoCheInfos.Length;i++,j++)
             {
                 if(i%2==1)
                 {
@@ -230,19 +233,33 @@ namespace test_2306
                 HuoChePiaoInfo.Add("历时", HuoChePiaos[10]);
                // HuoChePiaoInfo.Add("软座", HuoChePiaos[25]);
                // HuoChePiaoInfo.Add("动卧", HuoChePiaos[27]);
-                HuoChePiaoInfo.Add("高级软卧", HuoChePiaos[21]);
-                HuoChePiaoInfo.Add("软卧（一等卧）", HuoChePiaos[23]);
-                HuoChePiaoInfo.Add("无座", HuoChePiaos[26]);
-                HuoChePiaoInfo.Add("硬卧（二等座）", HuoChePiaos[28]);
-                HuoChePiaoInfo.Add("硬座", HuoChePiaos[29]);
-                HuoChePiaoInfo.Add("二等座（二等包座）", HuoChePiaos[30]);   
-                HuoChePiaoInfo.Add("一等座", HuoChePiaos[31]); 
-                HuoChePiaoInfo.Add("商务座", HuoChePiaos[32]);
+                HuoChePiaoInfo.Add("高级软卧", HuoChePiaos[21]==""?"无": HuoChePiaos[21]);
+                HuoChePiaoInfo.Add("软卧（一等卧）", HuoChePiaos[23] == "" ? "无" : HuoChePiaos[23]);
+                HuoChePiaoInfo.Add("无座", HuoChePiaos[26] == "" ? "无" : HuoChePiaos[26]);
+                HuoChePiaoInfo.Add("硬卧（二等座）", HuoChePiaos[28] == "" ? "无" : HuoChePiaos[28]);
+                HuoChePiaoInfo.Add("硬座", HuoChePiaos[29] == "" ? "无" : HuoChePiaos[29]);
+                HuoChePiaoInfo.Add("二等座（二等包座）", HuoChePiaos[30] == "" ? "无" : HuoChePiaos[30]);   
+                HuoChePiaoInfo.Add("一等座", HuoChePiaos[31] == "" ? "无" : HuoChePiaos[31]); 
+                HuoChePiaoInfo.Add("商务座", HuoChePiaos[32] == "" ? "无" : HuoChePiaos[32]);
                 foreach (string key in HuoChePiaoInfo.Keys)
                 {
-                    s = s +"\t"+ key + "=" + "\t"+HuoChePiaoInfo[key]+"\r\n";
+                    s = s +" "+ key + "=" +HuoChePiaoInfo[key]+";";
+                   
+
                 }
-                s=s + "\r\n\r\n";
+                //将火车票数据写入表格中
+                ////添加表格行表头
+                var ListView1_Item= listView1.Items.Add(HuoChePiaoInfo["车次"]);
+                foreach (string key in HuoChePiaoInfo.Keys)
+                {
+                    //添加表格列表头
+                    if (j == 1) { listView1.Columns.Add(key); }
+                    //添加表格行数据
+                    if (key == "车次") { continue; }
+                    ListView1_Item.SubItems.Add(HuoChePiaoInfo[key]);
+
+                }
+                s =s + "\r\n\r\n";
                 HuoChePiaoInfo.Clear();
 
             }
