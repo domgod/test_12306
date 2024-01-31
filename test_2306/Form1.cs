@@ -19,15 +19,22 @@ namespace test_2306
 {
     public partial class Form1 : Form
     {
+        //用来存储不同城市对应的编码的字典
+        Dictionary<string, string> ZhanTai = new Dictionary<string, string>();
+        Dictionary<string, string> BianMa = new Dictionary<string, string>();
+        //用来存放每一列火车的信息
+        Dictionary<string, string> HuoChePiaoInfo = new Dictionary<string, string>();
+
         public Form1()
         {
             InitializeComponent();
         }
 
-       
-
+       //用来接收验证码
+        public string randCode=string.Empty;
         private void DengLu_Click(object sender, EventArgs e)
         {
+            #region 联网方式
             //方式1:简单方法
             //string strHTML = "";
             //WebClient myWebClient = new WebClient();
@@ -49,7 +56,7 @@ namespace test_2306
             //receviceStream.Close();
             //result.Close();
             //textBox3.Text = strHTML;
-            //复杂方法：可以带cookie
+            //复杂方式，可以带cookie
             /// <summary>
             /// 获取页面html
             /// </summary>
@@ -57,52 +64,77 @@ namespace test_2306
             /// <param name="refererUri">来源url</param>
             /// <param name="encodingName">编码名称 例如：gb2312</param>
             /// <returns></returns>
+            //    string encodingName = "utf-8";
+            //    string refererUri = "https://kyfw.12306.cn/otn/leftTicket/queryE?leftTicketDTO.train_date=2024-01-23&leftTicketDTO.from_station=SZQ&leftTicketDTO.to_station=HDP&purpose_codes=ADULT";
+            //    string uri = refererUri;
+
+            //    string html = string.Empty;
+            //    CookieContainer cookieContainer = new CookieContainer();
+            //    HttpWebRequest request = (HttpWebRequest)WebRequest.Create(uri);
+            //    cookieContainer.Add(new Cookie("BAIDUID", "67017F5C6A5EE8351192F7D34E7A221E:FG=1", "", "kyfw.12306.cn"));
+            //    cookieContainer.Add(new Cookie("PSTM", "1523879243", "", "kyfw.12306.cn"));
+            //    cookieContainer.Add(new Cookie("BIDUPSID", "A29EA919049CED566C183C7ED175C6AB", "", "kyfw.12306.cn"));
+            //    cookieContainer.Add(new Cookie("BD_UPN", "1a314353", "", "kyfw.12306.cn"));
+            //    cookieContainer.Add(new Cookie("BDUSS", "1F4Wk1EUUxEWkNEZS1lUWdSNkFWOW5IbThoYXNYcktMWmhmRkE5MkxvQU9Jd0piQVFBQUFBJCQAAAAAAAAAAAEAAAD9qTIYw867wzGw19K5AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA6W2loOltpaY", "", "kyfw.12306.cn"));
+            //    request.ContentType = "text/html;charset=" + encodingName;
+            //    request.Method = "Get";
+            //    request.UserAgent = "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.26 Safari/537.36 Core/1.63.5221.400 QQBrowser/10.0.1125.400";
+            //    request.CookieContainer = cookieContainer;
+
+            //    if (!string.IsNullOrEmpty(refererUri))
+            //        request.Referer = refererUri;
+
+            //    using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
+            //    {
+            //        using (Stream streamResponse = response.GetResponseStream())
+            //        {
+            //            using (StreamReader streamResponseReader = new StreamReader(streamResponse, Encoding.GetEncoding(encodingName)))
+            //            {
+            //                html = streamResponseReader.ReadToEnd();
+            //            }
+            //        }
+            //    }
+
+            //textBox1.Text = html.ToString();
+            #endregion
            
-               // string uri = "https://kyfw.12306.cn/";
-               
-                string encodingName = "utf-8";
-                string refererUri = "https://kyfw.12306.cn/otn/leftTicket/queryE?leftTicketDTO.train_date=2024-01-23&leftTicketDTO.from_station=SZQ&leftTicketDTO.to_station=HDP&purpose_codes=ADULT";
-                string uri = refererUri;
-
+            while (true)
+            {
+                //获取手机验证码
+                string uri = "https://kyfw.12306.cn/passport/web/getMessageCode?appid=otn&username=" + textBox_ZhangHaoMing.Text + "&castNum=" + textBox_ShenFenZheng.Text;
                 string html = string.Empty;
-                CookieContainer cookieContainer = new CookieContainer();
-                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(uri);
-                cookieContainer.Add(new Cookie("BAIDUID", "67017F5C6A5EE8351192F7D34E7A221E:FG=1", "", "kyfw.12306.cn"));
-                cookieContainer.Add(new Cookie("PSTM", "1523879243", "", "kyfw.12306.cn"));
-                cookieContainer.Add(new Cookie("BIDUPSID", "A29EA919049CED566C183C7ED175C6AB", "", "kyfw.12306.cn"));
-                cookieContainer.Add(new Cookie("BD_UPN", "1a314353", "", "kyfw.12306.cn"));
-                cookieContainer.Add(new Cookie("BDUSS", "1F4Wk1EUUxEWkNEZS1lUWdSNkFWOW5IbThoYXNYcktMWmhmRkE5MkxvQU9Jd0piQVFBQUFBJCQAAAAAAAAAAAEAAAD9qTIYw867wzGw19K5AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA6W2loOltpaY", "", "kyfw.12306.cn"));
-                request.ContentType = "text/html;charset=" + encodingName;
-                request.Method = "Get";
-                request.UserAgent = "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.26 Safari/537.36 Core/1.63.5221.400 QQBrowser/10.0.1125.400";
-                request.CookieContainer = cookieContainer;
-
-                if (!string.IsNullOrEmpty(refererUri))
-                    request.Referer = refererUri;
-
-                using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
+                html = post(uri);
+                JObject obj1 = (JObject)JsonConvert.DeserializeObject(html);//将刚才一大串字符串转换成一个大对象
+                string result_code = obj1["result_code"].ToString();
+                string result_message = obj1["result_message"].ToString();
+                textBox1.Text = html.ToString();
+                if (result_code == "0")
                 {
-                    using (Stream streamResponse = response.GetResponseStream())
-                    {
-                        using (StreamReader streamResponseReader = new StreamReader(streamResponse, Encoding.GetEncoding(encodingName)))
-                        {
-                            html = streamResponseReader.ReadToEnd();
-                        }
-                    }
+                    var form2 = new YanZhengMa(this);
+                    form2.ShowDialog();
+                    break;
                 }
-
-            textBox1.Text = html.ToString();
-
-
-
+            }
+           //登陆网站
+            string uri2 = "https://kyfw.12306.cn/passport/web/login?sessionId=&sig=&if_check_slide_passcode_token=&scene=&checkMode=0&randCode="+ randCode +"&username="+textBox_ZhangHaoMing.Text+"&password="+textBox_MiMa.Text+"&appid=otn";
+            var html2=post(uri2);
+            JObject obj2 = (JObject)JsonConvert.DeserializeObject(html2);//将刚才一大串字符串转换成一个大对象
+            string uamtk = obj2["uamtk"].ToString();
+            string uri3 = "https://kyfw.12306.cn/passport/web/auth/uamtk?appid=otn";
+            var html3=post(uri3, "uamtk", uamtk);
+            JObject obj3 = (JObject)JsonConvert.DeserializeObject(html2);//将刚才一大串字符串转换成一个大对象
+            string newapptk = obj3["newapptk"].ToString();
+            string uri4 = "https://kyfw.12306.cn/otn/uamauthclient?tk=" + newapptk;
+            string html4 = post(uri4);
+            JObject obj4 = (JObject)JsonConvert.DeserializeObject(html2);//将刚才一大串字符串转换成一个大对象
+            string result4_message = obj4["result_message"].ToString();
+            string username = obj4["username"].ToString();
+            textBox1.Text=html4.ToString();
 
 
         }
-        //用来存储不同城市对应的编码的字典
-        Dictionary<string, string> ZhanTai = new Dictionary<string, string>();
-        Dictionary<string, string> BianMa = new Dictionary<string, string>();
-        //用来存放每一列火车的信息
-        Dictionary<string, string> HuoChePiaoInfo = new Dictionary<string, string>();
+
+        
         
         
         private void Form1_Load(object sender, EventArgs e)
@@ -117,41 +149,8 @@ namespace test_2306
             /// <returns></returns>
             //获取站台对应编码
             string uri = "https://kyfw.12306.cn/otn/resources/js/framework/station_name.js?station_version=1.9297";
-            string refererUri = uri;
-            string encodingName = "utf-8";
-
             string html_DiZhiBianMa = string.Empty;
-            CookieContainer cookieContainer = new CookieContainer();
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(uri);
-
-            cookieContainer.Add(new Cookie("_uab_collina", "170554335525961696602851", "/otn/leftTicket", "kyfw.12306.cn"));
-            cookieContainer.Add(new Cookie("JSESSIONID", "7635D7764CCF7C700C622EFF8E92552E", "/otn", "kyfw.12306.cn"));
-            cookieContainer.Add(new Cookie("BIGipServerpassport", "904397066.50215.0000", "/", "kyfw.12306.cn"));
-            cookieContainer.Add(new Cookie("guidesStatus", "off", "/", ".12306.cn"));
-            cookieContainer.Add(new Cookie("highContrastMode", "defaltMode", "/", ".12306.cn"));
-            cookieContainer.Add(new Cookie("route", "c5c62a339e7744272a54643b3be5bf64", "/", "kyfw.12306.cn"));
-            cookieContainer.Add(new Cookie("BIGipServerotn", "2564227338.24610.0000", "/", "kyfw.12306.cn"));
-            cookieContainer.Add(new Cookie("BIGipServerpassport", "904397066.50215.0000", "/", "kyfw.12306.cn"));
-            request.ContentType = "text/html;charset=" + encodingName;
-            request.Method = "Get";
-            request.UserAgent = "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.26 Safari/537.36 Core/1.63.5221.400 QQBrowser/10.0.1125.400";
-            request.CookieContainer = cookieContainer;
-
-            if (!string.IsNullOrEmpty(refererUri))
-                request.Referer = refererUri;
-
-            using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
-            {
-                using (Stream streamResponse = response.GetResponseStream())
-                {
-                    using (StreamReader streamResponseReader = new StreamReader(streamResponse, Encoding.GetEncoding(encodingName)))
-                    {
-                        html_DiZhiBianMa = streamResponseReader.ReadToEnd();
-                    }
-                }
-            }
-            //textBox1.Text = html_DiZhiBianMa;
-
+            html_DiZhiBianMa = post(uri);
             string[] ZhanTai_BianMas = html_DiZhiBianMa.Split('@');
             foreach (string ZhanTai_BianMa in ZhanTai_BianMas)
             {
@@ -164,6 +163,7 @@ namespace test_2306
                     BianMa.Add(VALUE, KEY);
                 }
             }
+            listView1.Visible = false;
         }
 
         
@@ -172,44 +172,11 @@ namespace test_2306
             //清除表格残留数据
             listView1.Columns.Clear();
             listView1.Items.Clear();
-           
-            
             string FormAddress = ZhanTai[textBox_ChuFaDi.Text] ;
             string ToAddress = ZhanTai[textBox_MuDiDi.Text];
             string uri = "https://kyfw.12306.cn/otn/leftTicket/queryE?leftTicketDTO.train_date=" + dateTimePicker_ChuFaShiJian.Value.ToString("yyyy-MM-dd") + "&leftTicketDTO.from_station=" + FormAddress + "&leftTicketDTO.to_station=" + ToAddress + "&purpose_codes=ADULT";
-            string refererUri = uri;
-            string encodingName = "utf-8";
-
-            string html = string.Empty;
-            CookieContainer cookieContainer = new CookieContainer();
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(uri);
-
-            cookieContainer.Add(new Cookie("_uab_collina", "170554335525961696602851", "/otn/leftTicket", "kyfw.12306.cn"));
-            cookieContainer.Add(new Cookie("JSESSIONID", "7635D7764CCF7C700C622EFF8E92552E", "/otn", "kyfw.12306.cn"));
-            cookieContainer.Add(new Cookie("BIGipServerpassport", "904397066.50215.0000", "/", "kyfw.12306.cn"));
-            cookieContainer.Add(new Cookie("guidesStatus", "off", "/", ".12306.cn"));
-            cookieContainer.Add(new Cookie("highContrastMode", "defaltMode", "/", ".12306.cn"));
-            cookieContainer.Add(new Cookie("route", "c5c62a339e7744272a54643b3be5bf64", "/", "kyfw.12306.cn"));
-            cookieContainer.Add(new Cookie("BIGipServerotn", "2564227338.24610.0000", "/", "kyfw.12306.cn"));
-            cookieContainer.Add(new Cookie("BIGipServerpassport", "904397066.50215.0000", "/", "kyfw.12306.cn"));
-            request.ContentType = "text/html;charset=" + encodingName;
-            request.Method = "Get";
-            request.UserAgent = "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.26 Safari/537.36 Core/1.63.5221.400 QQBrowser/10.0.1125.400";
-            request.CookieContainer = cookieContainer;
-
-            if (!string.IsNullOrEmpty(refererUri))
-                request.Referer = refererUri;
-
-            using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
-            {
-                using (Stream streamResponse = response.GetResponseStream())
-                {
-                    using (StreamReader streamResponseReader = new StreamReader(streamResponse, Encoding.GetEncoding(encodingName)))
-                    {
-                        html = streamResponseReader.ReadToEnd();
-                    }
-                }
-            }
+           string html = string.Empty;
+            html = post(uri);
            // 
             JObject obj = (JObject)JsonConvert.DeserializeObject(html);//将刚才一大串字符串转换成一个大对象
             string data = obj["data"]["result"].ToString();
@@ -264,7 +231,95 @@ namespace test_2306
 
             }
             textBox1.Text = s;
+            textBox1.Visible = false;
+            listView1.Visible = true;
 
+        }
+        //访问网站方法1
+        public string post( string uri)
+        {
+            /// <summary>
+            /// 获取页面html
+            /// </summary>
+            /// <param name="uri">访问url</param>
+            /// <param name="refererUri">来源url</param>
+            /// <param name="encodingName">编码名称 例如：gb2312</param>
+            /// <returns></returns>
+            string encodingName = "utf-8";
+            string refererUri = uri;
+            string Date = string.Empty;
+            CookieContainer cookieContainer = new CookieContainer();
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(uri);
+            cookieContainer.Add(new Cookie("_uab_collina", "170554335525961696602851", "/otn/leftTicket", "kyfw.12306.cn"));
+            cookieContainer.Add(new Cookie("JSESSIONID", "7635D7764CCF7C700C622EFF8E92552E", "/otn", "kyfw.12306.cn"));
+            cookieContainer.Add(new Cookie("BIGipServerpassport", "904397066.50215.0000", "/", "kyfw.12306.cn"));
+            cookieContainer.Add(new Cookie("guidesStatus", "off", "/", ".12306.cn"));
+            cookieContainer.Add(new Cookie("highContrastMode", "defaltMode", "/", ".12306.cn"));
+            cookieContainer.Add(new Cookie("route", "c5c62a339e7744272a54643b3be5bf64", "/", "kyfw.12306.cn"));
+            cookieContainer.Add(new Cookie("BIGipServerotn", "2564227338.24610.0000", "/", "kyfw.12306.cn"));
+            cookieContainer.Add(new Cookie("BIGipServerpassport", "904397066.50215.0000", "/", "kyfw.12306.cn"));
+            request.ContentType = "text/html;charset=" + encodingName;
+            request.Method = "Get";
+            request.UserAgent = "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.26 Safari/537.36 Core/1.63.5221.400 QQBrowser/10.0.1125.400";
+            request.CookieContainer = cookieContainer;
+
+            if (!string.IsNullOrEmpty(refererUri))
+                request.Referer = refererUri;
+
+            using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
+            {
+                using (Stream streamResponse = response.GetResponseStream())
+                {
+                    using (StreamReader streamResponseReader = new StreamReader(streamResponse, Encoding.GetEncoding(encodingName)))
+                    {
+                        Date = streamResponseReader.ReadToEnd();
+                    }
+                }
+            }
+            return Date;
+        }
+        public string post(string uri,string Cookie_name,string Cookie_value)
+        {
+            /// <summary>
+            /// 获取页面html
+            /// </summary>
+            /// <param name="uri">访问url</param>
+            /// <param name="refererUri">来源url</param>
+            /// <param name="encodingName">编码名称 例如：gb2312</param>
+            /// <returns></returns>
+            string encodingName = "utf-8";
+            string refererUri = uri;
+            string Date = string.Empty;
+            CookieContainer cookieContainer = new CookieContainer();
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(uri);
+            cookieContainer.Add(new Cookie(Cookie_name, Cookie_value));
+            cookieContainer.Add(new Cookie("_uab_collina", "170554335525961696602851", "/otn/leftTicket", "kyfw.12306.cn"));
+            cookieContainer.Add(new Cookie("JSESSIONID", "7635D7764CCF7C700C622EFF8E92552E", "/otn", "kyfw.12306.cn"));
+            cookieContainer.Add(new Cookie("BIGipServerpassport", "904397066.50215.0000", "/", "kyfw.12306.cn"));
+            cookieContainer.Add(new Cookie("guidesStatus", "off", "/", ".12306.cn"));
+            cookieContainer.Add(new Cookie("highContrastMode", "defaltMode", "/", ".12306.cn"));
+            cookieContainer.Add(new Cookie("route", "c5c62a339e7744272a54643b3be5bf64", "/", "kyfw.12306.cn"));
+            cookieContainer.Add(new Cookie("BIGipServerotn", "2564227338.24610.0000", "/", "kyfw.12306.cn"));
+            cookieContainer.Add(new Cookie("BIGipServerpassport", "904397066.50215.0000", "/", "kyfw.12306.cn"));
+            request.ContentType = "text/html;charset=" + encodingName;
+            request.Method = "Get";
+            request.UserAgent = "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.26 Safari/537.36 Core/1.63.5221.400 QQBrowser/10.0.1125.400";
+            request.CookieContainer = cookieContainer;
+
+            if (!string.IsNullOrEmpty(refererUri))
+                request.Referer = refererUri;
+
+            using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
+            {
+                using (Stream streamResponse = response.GetResponseStream())
+                {
+                    using (StreamReader streamResponseReader = new StreamReader(streamResponse, Encoding.GetEncoding(encodingName)))
+                    {
+                        Date = streamResponseReader.ReadToEnd();
+                    }
+                }
+            }
+            return Date;
         }
     }
 }
