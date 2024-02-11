@@ -28,14 +28,10 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.ListViewItem listViewItem1 = new System.Windows.Forms.ListViewItem(new string[] {
+            System.Windows.Forms.ListViewItem listViewItem2 = new System.Windows.Forms.ListViewItem(new string[] {
             "123",
             "1234",
             ""}, -1);
-            this.textBox_ZhangHaoMing = new System.Windows.Forms.TextBox();
-            this.ZhangHao = new System.Windows.Forms.Label();
-            this.MiMa = new System.Windows.Forms.Label();
-            this.textBox_MiMa = new System.Windows.Forms.TextBox();
             this.DengLu = new System.Windows.Forms.Button();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
@@ -48,45 +44,12 @@
             this.textBox_ChuFaDi = new System.Windows.Forms.TextBox();
             this.ChaXun = new System.Windows.Forms.Button();
             this.listView1 = new System.Windows.Forms.ListView();
-            this.ShenFenZheng = new System.Windows.Forms.Label();
-            this.textBox_ShenFenZheng = new System.Windows.Forms.TextBox();
+            this.button_ZhuXiao = new System.Windows.Forms.Button();
             this.SuspendLayout();
-            // 
-            // textBox_ZhangHaoMing
-            // 
-            this.textBox_ZhangHaoMing.Location = new System.Drawing.Point(59, 10);
-            this.textBox_ZhangHaoMing.Name = "textBox_ZhangHaoMing";
-            this.textBox_ZhangHaoMing.Size = new System.Drawing.Size(122, 21);
-            this.textBox_ZhangHaoMing.TabIndex = 0;
-            // 
-            // ZhangHao
-            // 
-            this.ZhangHao.AutoSize = true;
-            this.ZhangHao.Location = new System.Drawing.Point(12, 13);
-            this.ZhangHao.Name = "ZhangHao";
-            this.ZhangHao.Size = new System.Drawing.Size(53, 12);
-            this.ZhangHao.TabIndex = 1;
-            this.ZhangHao.Text = "账号名：";
-            // 
-            // MiMa
-            // 
-            this.MiMa.AutoSize = true;
-            this.MiMa.Location = new System.Drawing.Point(200, 12);
-            this.MiMa.Name = "MiMa";
-            this.MiMa.Size = new System.Drawing.Size(41, 12);
-            this.MiMa.TabIndex = 2;
-            this.MiMa.Text = "密码：";
-            // 
-            // textBox_MiMa
-            // 
-            this.textBox_MiMa.Location = new System.Drawing.Point(235, 10);
-            this.textBox_MiMa.Name = "textBox_MiMa";
-            this.textBox_MiMa.Size = new System.Drawing.Size(130, 21);
-            this.textBox_MiMa.TabIndex = 3;
             // 
             // DengLu
             // 
-            this.DengLu.Location = new System.Drawing.Point(623, 13);
+            this.DengLu.Location = new System.Drawing.Point(14, 12);
             this.DengLu.Name = "DengLu";
             this.DengLu.Size = new System.Drawing.Size(75, 23);
             this.DengLu.TabIndex = 4;
@@ -181,7 +144,7 @@
             // 
             this.listView1.HideSelection = false;
             this.listView1.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
-            listViewItem1});
+            listViewItem2});
             this.listView1.Location = new System.Drawing.Point(-2, 153);
             this.listView1.Name = "listView1";
             this.listView1.Size = new System.Drawing.Size(806, 297);
@@ -189,29 +152,22 @@
             this.listView1.UseCompatibleStateImageBehavior = false;
             this.listView1.View = System.Windows.Forms.View.Details;
             // 
-            // ShenFenZheng
+            // button_ZhuXiao
             // 
-            this.ShenFenZheng.AutoSize = true;
-            this.ShenFenZheng.Location = new System.Drawing.Point(386, 17);
-            this.ShenFenZheng.Name = "ShenFenZheng";
-            this.ShenFenZheng.Size = new System.Drawing.Size(101, 12);
-            this.ShenFenZheng.TabIndex = 16;
-            this.ShenFenZheng.Text = "身份证号后四位：";
-            // 
-            // textBox_ShenFenZheng
-            // 
-            this.textBox_ShenFenZheng.Location = new System.Drawing.Point(483, 14);
-            this.textBox_ShenFenZheng.Name = "textBox_ShenFenZheng";
-            this.textBox_ShenFenZheng.Size = new System.Drawing.Size(100, 21);
-            this.textBox_ShenFenZheng.TabIndex = 17;
+            this.button_ZhuXiao.Location = new System.Drawing.Point(111, 12);
+            this.button_ZhuXiao.Name = "button_ZhuXiao";
+            this.button_ZhuXiao.Size = new System.Drawing.Size(75, 23);
+            this.button_ZhuXiao.TabIndex = 16;
+            this.button_ZhuXiao.Text = "注销";
+            this.button_ZhuXiao.UseVisualStyleBackColor = true;
+            this.button_ZhuXiao.Click += new System.EventHandler(this.button_ZhuXiao_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Controls.Add(this.textBox_ShenFenZheng);
-            this.Controls.Add(this.ShenFenZheng);
+            this.Controls.Add(this.button_ZhuXiao);
             this.Controls.Add(this.listView1);
             this.Controls.Add(this.ChaXun);
             this.Controls.Add(this.textBox_ChuFaDi);
@@ -224,10 +180,6 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.DengLu);
-            this.Controls.Add(this.textBox_MiMa);
-            this.Controls.Add(this.MiMa);
-            this.Controls.Add(this.ZhangHao);
-            this.Controls.Add(this.textBox_ZhangHaoMing);
             this.Name = "Form1";
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.Form1_Load);
@@ -237,11 +189,6 @@
         }
 
         #endregion
-
-        private System.Windows.Forms.TextBox textBox_ZhangHaoMing;
-        private System.Windows.Forms.Label ZhangHao;
-        private System.Windows.Forms.Label MiMa;
-        private System.Windows.Forms.TextBox textBox_MiMa;
         private System.Windows.Forms.Button DengLu;
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.Label label1;
@@ -254,8 +201,7 @@
         private System.Windows.Forms.TextBox textBox_ChuFaDi;
         private System.Windows.Forms.Button ChaXun;
         private System.Windows.Forms.ListView listView1;
-        private System.Windows.Forms.Label ShenFenZheng;
-        private System.Windows.Forms.TextBox textBox_ShenFenZheng;
+        public System.Windows.Forms.Button button_ZhuXiao;
     }
 }
 

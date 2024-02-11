@@ -49,21 +49,31 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Form1.cs">
+    <Compile Include="InterWork\inter.cs" />
+    <Compile Include="windows\DengLu.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form1.Designer.cs">
+    <Compile Include="windows\DengLu.Designer.cs">
+      <DependentUpon>DengLu.cs</DependentUpon>
+    </Compile>
+    <Compile Include="windows\Form1.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="windows\Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="YanZhengMa.cs">
+    <Compile Include="windows\YanZhengMa.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="YanZhengMa.Designer.cs">
+    <Compile Include="windows\YanZhengMa.Designer.cs">
       <DependentUpon>YanZhengMa.cs</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="Form1.resx">
+    <EmbeddedResource Include="windows\DengLu.resx">
+      <DependentUpon>DengLu.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="windows\Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -75,7 +85,7 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="YanZhengMa.resx">
+    <EmbeddedResource Include="windows\YanZhengMa.resx">
       <DependentUpon>YanZhengMa.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="packages.config" />

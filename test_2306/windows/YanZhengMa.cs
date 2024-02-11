@@ -7,17 +7,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using test_2306.windows;
 
 namespace test_2306
 {
     public partial class YanZhengMa : Form
     {
-        Form1 frm;
+        DengLu frm;
         public YanZhengMa()
         {
             InitializeComponent();
         }
-        public YanZhengMa(Form1 form)
+        public YanZhengMa(DengLu form)
         {
             InitializeComponent();
             frm = form;
