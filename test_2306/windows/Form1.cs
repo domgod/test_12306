@@ -183,6 +183,7 @@ namespace test_2306
             var html_LogOut = inter_Form1.post(uri_LogOut);
             MessageBox.Show("已注销");
             button_ZhuXiao.Visible=false;
+            DengLu.Visible = true;
         }
     }
 }

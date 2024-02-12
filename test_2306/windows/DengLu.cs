@@ -35,7 +35,7 @@ namespace test_2306.windows
         }
 
         public inter inter1=null;
-        CookieContainer cookieContainer1 = new CookieContainer();
+        
         private void DengLu_Load(object sender, EventArgs e)
         {
             pictureBox1.Visible = false;
@@ -95,34 +95,38 @@ namespace test_2306.windows
                 Thread.Sleep(1000);
             }
             var html_data = "";
-                string uri_uamtk = "https://kyfw.12306.cn/passport/web/auth/uamtk?appid=otn";
-                var html_uamtk = inter1.post(uri_uamtk);
-                html_data = html_uamtk;
-                JObject obj_uamtk = (JObject)JsonConvert.DeserializeObject(html_uamtk);//将刚才一大串字符串转换成一个大对象
-                string result_code1 = obj_uamtk["result_code"].ToString() ?? "";
-                string newapptk1 = obj_uamtk["newapptk"].ToString() ?? "";
+            string uri_uamtk = "https://kyfw.12306.cn/passport/web/auth/uamtk?appid=otn";
+            var html_uamtk = inter1.post(uri_uamtk);
+            html_data = html_uamtk;
+            JObject obj_uamtk = (JObject)JsonConvert.DeserializeObject(html_uamtk);//将刚才一大串字符串转换成一个大对象
+            string result_code1 = obj_uamtk["result_code"].ToString() ?? "";
+            string newapptk1 = obj_uamtk["newapptk"].ToString() ?? "";
 
-                string uri_uamauthclient = "https://kyfw.12306.cn/otn/uamauthclient?tk=" + newapptk1;
-                var html_uamauthclient = inter1.post1(uri_uamauthclient);
-                html_data = html_uamauthclient;
-                JObject obj_uamauthclient = (JObject)JsonConvert.DeserializeObject(html_uamauthclient);//将刚才一大串字符串转换成一个大对象
-                string result_code2 = obj_uamauthclient["result_code"].ToString();
-                string result_message2 = obj_uamauthclient["result_message"].ToString();
-                string result_username = obj_uamauthclient["username"].ToString();
-                string apptk = obj_uamauthclient["apptk"].ToString();
-                MessageBox.Show(result_username + "\r\n" + result_message2);
-                frm.button_ZhuXiao.Visible = true;
-                this.Close();
-                       
+            string uri_uamauthclient = "https://kyfw.12306.cn/otn/uamauthclient?tk=" + newapptk1;
+            var html_uamauthclient = inter1.post1(uri_uamauthclient);
+            html_data = html_uamauthclient;
+            JObject obj_uamauthclient = (JObject)JsonConvert.DeserializeObject(html_uamauthclient);//将刚才一大串字符串转换成一个大对象
+            string result_code2 = obj_uamauthclient["result_code"].ToString();
+            string result_message2 = obj_uamauthclient["result_message"].ToString();
+            string result_username = obj_uamauthclient["username"].ToString();
+            string apptk = obj_uamauthclient["apptk"].ToString();
+            MessageBox.Show(result_username + "\r\n" + result_message2);
+            frm.button_ZhuXiao.Visible = true;
+            frm.DengLu.Visible = false;
+            this.Close();            
         }
 
         //用来接收验证码
         public string randCode = string.Empty;
         private  void button_ZhangHaoDengLu_Click(object sender, EventArgs e)
         {
-            
+            string url = "https://kyfw.12306.cn/passport/web/checkLoginVerify?username=" + textBox_ZhangHaoMing.Text.ToString() + "&appid=otn";
+            string html_2 = inter1.post(url);
+            MessageBox.Show(html_2);
+
             while (true)
             {
+                
                 //获取手机验证码
                 string uri = "https://kyfw.12306.cn/passport/web/getMessageCode?appid=otn&username=" + textBox_ZhangHaoMing.Text + "&castNum=" + textBox_ShenFenZheng.Text;
                 string html = string.Empty;
@@ -147,15 +151,18 @@ namespace test_2306.windows
             string uamtk = obj2["uamtk"].ToString();
             string uri3 = "https://kyfw.12306.cn/passport/web/auth/uamtk?appid=otn";
             var html3 = inter1.post(uri3);
-            JObject obj3 = (JObject)JsonConvert.DeserializeObject(html2);//将刚才一大串字符串转换成一个大对象
+            JObject obj3 = (JObject)JsonConvert.DeserializeObject(html3);//将刚才一大串字符串转换成一个大对象
             if (obj3["newapptk"] == null) MessageBox.Show("登陆出错\r\n" + html3);
             string newapptk = obj3["newapptk"].ToString();
             string uri4 = "https://kyfw.12306.cn/otn/uamauthclient?tk=" + newapptk;
-            string html4 = inter1.post(uri4);
-            JObject obj4 = (JObject)JsonConvert.DeserializeObject(html2);//将刚才一大串字符串转换成一个大对象
+            string html4 = inter1.post1(uri4);
+            JObject obj4 = (JObject)JsonConvert.DeserializeObject(html4);//将刚才一大串字符串转换成一个大对象
             string result4_message = obj4["result_message"].ToString();
             string username = obj4["username"].ToString();
+            MessageBox.Show("用户名："+username + "\r\n" +"信息："+ result4_message);
+            this.Close();
             frm.button_ZhuXiao.Visible = true;
+            frm.DengLu.Visible = false;
         }
 
        

@@ -154,7 +154,7 @@
             // 
             // button_ZhuXiao
             // 
-            this.button_ZhuXiao.Location = new System.Drawing.Point(111, 12);
+            this.button_ZhuXiao.Location = new System.Drawing.Point(92, 12);
             this.button_ZhuXiao.Name = "button_ZhuXiao";
             this.button_ZhuXiao.Size = new System.Drawing.Size(75, 23);
             this.button_ZhuXiao.TabIndex = 16;
@@ -189,7 +189,7 @@
         }
 
         #endregion
-        private System.Windows.Forms.Button DengLu;
+        public System.Windows.Forms.Button DengLu;
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
