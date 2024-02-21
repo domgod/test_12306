@@ -46,6 +46,12 @@ namespace test_2306.windows
 
                 for (int i = 0; i < HuoCheInfos.Length; i++)
                 {
+                    //用来防止一个火车票中间的逗号影响
+                    if (i % 2 == 0)
+                    {
+                        continue;
+                    }
+                    HuoCheInfos[i] = HuoCheInfos[i - 1] + HuoCheInfos[i];
                     HuoChePiao hcp = new HuoChePiao(HuoCheInfos[i]);
                     List_HuoChePiao.Add(hcp);
                 }
