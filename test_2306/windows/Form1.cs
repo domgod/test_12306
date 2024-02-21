@@ -25,14 +25,16 @@ namespace test_2306
         public DengLu DengLu1;
         //存放验证码页面的数据
         public YanZhengMa YanZhengMa1;
+        //存放抢票页面的数据
+        public QiangPiao QiangPiao1;
 
         //用来存储不同城市对应的编码的字典
-        Dictionary<string, string> ZhanTai = new Dictionary<string, string>();
-        Dictionary<string, string> BianMa = new Dictionary<string, string>();
+        public  Dictionary<string, string> ZhanTai = new Dictionary<string, string>();
+        public Dictionary<string, string> BianMa = new Dictionary<string, string>();
         //用来存放每一列火车的信息
         Dictionary<string, string> HuoChePiaoInfo = new Dictionary<string, string>();
         //创建cookie
-        CookieContainer cookieContainer = new CookieContainer();
+        public CookieContainer cookieContainer = new CookieContainer();
         public inter inter_Form1;
         public Form1()
         {
@@ -184,6 +186,12 @@ namespace test_2306
             MessageBox.Show("已注销");
             button_ZhuXiao.Visible=false;
             DengLu.Visible = true;
+        }
+
+        private void button_QiangPiao_Click(object sender, EventArgs e)
+        {
+           QiangPiao1= new QiangPiao(this);
+           QiangPiao1.ShowDialog();
         }
     }
 }

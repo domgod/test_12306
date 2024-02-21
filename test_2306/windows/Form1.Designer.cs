@@ -45,6 +45,7 @@
             this.ChaXun = new System.Windows.Forms.Button();
             this.listView1 = new System.Windows.Forms.ListView();
             this.button_ZhuXiao = new System.Windows.Forms.Button();
+            this.button_QiangPiao = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // DengLu
@@ -162,11 +163,22 @@
             this.button_ZhuXiao.UseVisualStyleBackColor = true;
             this.button_ZhuXiao.Click += new System.EventHandler(this.button_ZhuXiao_Click);
             // 
+            // button_QiangPiao
+            // 
+            this.button_QiangPiao.Location = new System.Drawing.Point(218, 13);
+            this.button_QiangPiao.Name = "button_QiangPiao";
+            this.button_QiangPiao.Size = new System.Drawing.Size(75, 23);
+            this.button_QiangPiao.TabIndex = 17;
+            this.button_QiangPiao.Text = "抢票";
+            this.button_QiangPiao.UseVisualStyleBackColor = true;
+            this.button_QiangPiao.Click += new System.EventHandler(this.button_QiangPiao_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.button_QiangPiao);
             this.Controls.Add(this.button_ZhuXiao);
             this.Controls.Add(this.listView1);
             this.Controls.Add(this.ChaXun);
@@ -202,6 +214,7 @@
         private System.Windows.Forms.Button ChaXun;
         private System.Windows.Forms.ListView listView1;
         public System.Windows.Forms.Button button_ZhuXiao;
+        private System.Windows.Forms.Button button_QiangPiao;
     }
 }
 
