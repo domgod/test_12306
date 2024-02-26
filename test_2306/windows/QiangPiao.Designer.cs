@@ -37,6 +37,8 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
+            this.listView_ChengKe = new System.Windows.Forms.ListView();
+            this.label5 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // button_QiangPiao
@@ -113,11 +115,31 @@
             this.label1.TabIndex = 15;
             this.label1.Text = "出发时间：";
             // 
+            // listView_ChengKe
+            // 
+            this.listView_ChengKe.HideSelection = false;
+            this.listView_ChengKe.Location = new System.Drawing.Point(20, 129);
+            this.listView_ChengKe.Name = "listView_ChengKe";
+            this.listView_ChengKe.Size = new System.Drawing.Size(181, 309);
+            this.listView_ChengKe.TabIndex = 24;
+            this.listView_ChengKe.UseCompatibleStateImageBehavior = false;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(18, 105);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(53, 12);
+            this.label5.TabIndex = 25;
+            this.label5.Text = "选择乘客";
+            // 
             // QiangPiao
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.label5);
+            this.Controls.Add(this.listView_ChengKe);
             this.Controls.Add(this.button_QiangPiao);
             this.Controls.Add(this.textBox_ChuFaDi);
             this.Controls.Add(this.textBox_MuDiDi);
@@ -145,5 +167,7 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.ListView listView_ChengKe;
+        private System.Windows.Forms.Label label5;
     }
 }

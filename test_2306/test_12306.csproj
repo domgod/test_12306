@@ -49,6 +49,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="data\ChengKe.cs" />
     <Compile Include="data\HuoChePiao.cs" />
     <Compile Include="InterWork\inter.cs" />
     <Compile Include="windows\DengLu.cs">
