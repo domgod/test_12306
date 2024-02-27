@@ -40,8 +40,8 @@ namespace test_2306.data
         {
             try
             {
-                string[] HuoChePiaos = str.Split('|');
-                this.BianMa = HuoChePiaos[0].Substring(6);
+                string[] HuoChePiaos = str.Substring(5). Split('|');
+                this.BianMa = HuoChePiaos[0];
                 this.CheCi = HuoChePiaos[3];
                 this.ShiFaDi = HuoChePiaos[4];
                 this.ZhongDian = HuoChePiaos[5];

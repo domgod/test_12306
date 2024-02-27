@@ -12,6 +12,7 @@ namespace test_2306.data
         public string Passenger_Id_Type_Code;
         public string Passenger_Id_No;
         public string Mobile_No;
-        
+        public string AllEncStr;
+
     }
 }

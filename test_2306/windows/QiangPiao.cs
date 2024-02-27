@@ -18,6 +18,7 @@ namespace test_2306.windows
     {
         Form1 frm;
         List<ChengKe> List_ChengKes = new List<ChengKe>();
+        string globalRepeatSubmitToken = null;
         public QiangPiao()
         {
             InitializeComponent();
@@ -43,7 +44,7 @@ namespace test_2306.windows
                 html = frm.inter_Form1.post(uri);
                 JObject obj = (JObject)JsonConvert.DeserializeObject(html);//将刚才一大串字符串转换成一个大对象
                 string data = obj["data"]["result"].ToString();
-                string[] HuoCheInfos = data.Split(',');
+                string[] HuoCheInfos = data.Substring(1). Split(',');
 
                 for (int i = 0; i < HuoCheInfos.Length; i++)
                 {
@@ -102,7 +103,7 @@ namespace test_2306.windows
 
             #endregion
             #region 订单初始化 
-            string globalRepeatSubmitToken=null;
+            
             try
             {
                 string uri_initDc = "https://kyfw.12306.cn/otn/confirmPassenger/initDc?_json_att=";
@@ -133,8 +134,9 @@ namespace test_2306.windows
                     ck.Passenger_Id_Type_Code = passenger["passenger_id_type_code"].ToString();
                     ck.Passenger_Id_No = passenger["passenger_id_no"].ToString();
                     ck.Mobile_No = passenger["mobile_no"].ToString();
+                    ck.AllEncStr = passenger["allEncStr"].ToString();
                     List_ChengKes.Add(ck);
-                    listView_ChengKe.Items.Add(ck.Passenger_Name+"\r\n");
+                    checkedListBox_ChengKe.Items.Add(ck.Passenger_Name + "\r\n");
                 }
                 
             }
@@ -145,8 +147,40 @@ namespace test_2306.windows
                 return;
             }
             #endregion
+            
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
             #region 检查选票人信息
-           // string uri_1 = "https://kyfw.12306.cn/otn/confirmPassenger/checkOrderInfo?cancel_flag=2&bed_level_order_num=000000000000000000000000000000&passengerTicketStr=";
+            string uri_checkOrderInfo_1 = "https://kyfw.12306.cn/otn/confirmPassenger/checkOrderInfo?cancel_flag=2&bed_level_order_num=000000000000000000000000000000";
+            string uri_checkOrderInfo_2;
+            string uri_checkOrderInfo_3 = null;
+            string uri_checkOrderInfo_4 = null;
+            if (List_HuoChePiao[0].CheCi.Substring(0, 1) == "G")
+            {
+                uri_checkOrderInfo_2 = "&passengerTicketStr =9,0,1,";
+
+            }
+            else
+            {
+                uri_checkOrderInfo_2 = "&passengerTicketStr=1,0,1,";
+            }
+            for (int i = 0; i < checkedListBox_ChengKe.Items.Count; i++)
+            {
+                if (checkedListBox_ChengKe.GetItemChecked(i))
+                {
+                    uri_checkOrderInfo_3 = List_ChengKes[i].Passenger_Name + "," + List_ChengKes[i].Passenger_Id_Type_Code + "," + List_ChengKes[i].Passenger_Id_No + "," + List_ChengKes[i].Mobile_No + ",N," + List_ChengKes[i].AllEncStr;
+                    uri_checkOrderInfo_4 = "&oldPassengerStr=" + List_ChengKes[i].Passenger_Name + "," + List_ChengKes[i].Passenger_Id_Type_Code + "," + List_ChengKes[i].Passenger_Id_No + "1_";
+                }
+            }
+            string uri_checkorderInfo_5 = "&tour_flag=dc&whatsSelect=1&sessionId=&sig=&scene=nc_login&_json_att=&REPEAT_SUBMIT_TOKEN=" + globalRepeatSubmitToken;
+            string uri_checkorderInfo = uri_checkOrderInfo_1 + uri_checkOrderInfo_2 + uri_checkOrderInfo_3 + uri_checkOrderInfo_4 + uri_checkorderInfo_5;
+            var html_checkorderInfo = frm.inter_Form1.post(uri_checkorderInfo);
+            JObject obj_checkorderInfo = (JObject)JsonConvert.DeserializeObject(html_checkorderInfo);//将刚才一大串字符串转换成一个大对象
+            var status1 = obj_checkorderInfo["status"];
+
+
 
             #endregion
         }
