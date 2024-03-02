@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using test_2306.data;
+using System.Threading;
 
 namespace test_2306.windows
 {
@@ -19,6 +20,7 @@ namespace test_2306.windows
         Form1 frm;
         List<ChengKe> List_ChengKes = new List<ChengKe>();
         string globalRepeatSubmitToken = null;
+        string key_check_isChange = null;
         public QiangPiao()
         {
             InitializeComponent();
@@ -111,11 +113,15 @@ namespace test_2306.windows
                 var index = obj_initDc.IndexOf("globalRepeatSubmitToken");
                 if (index > -1) { index += 27; }
                 globalRepeatSubmitToken = obj_initDc.Substring(index, 32);
+                index = obj_initDc.IndexOf("key_check_isChange");
+                if (index > -1) { index += 21; }
+                key_check_isChange = obj_initDc.Substring(index, 56);
+
+
             }
             catch
             {
                 MessageBox.Show("订单初始化时出错，请检查");
-                this.Close();
                 return;
             }
 
@@ -150,37 +156,187 @@ namespace test_2306.windows
             
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void button_QueRenChengCheRen_Click(object sender, EventArgs e)
         {
             #region 检查选票人信息
             string uri_checkOrderInfo_1 = "https://kyfw.12306.cn/otn/confirmPassenger/checkOrderInfo?cancel_flag=2&bed_level_order_num=000000000000000000000000000000";
             string uri_checkOrderInfo_2;
             string uri_checkOrderInfo_3 = null;
             string uri_checkOrderInfo_4 = null;
-            if (List_HuoChePiao[0].CheCi.Substring(0, 1) == "G")
-            {
-                uri_checkOrderInfo_2 = "&passengerTicketStr =9,0,1,";
+            string uri_checkorderInfo_5 = null;
 
-            }
-            else
+            try
             {
-                uri_checkOrderInfo_2 = "&passengerTicketStr=1,0,1,";
-            }
-            for (int i = 0; i < checkedListBox_ChengKe.Items.Count; i++)
-            {
-                if (checkedListBox_ChengKe.GetItemChecked(i))
+                if (List_HuoChePiao[0].CheCi.Substring(0, 1) == "G")
                 {
-                    uri_checkOrderInfo_3 = List_ChengKes[i].Passenger_Name + "," + List_ChengKes[i].Passenger_Id_Type_Code + "," + List_ChengKes[i].Passenger_Id_No + "," + List_ChengKes[i].Mobile_No + ",N," + List_ChengKes[i].AllEncStr;
-                    uri_checkOrderInfo_4 = "&oldPassengerStr=" + List_ChengKes[i].Passenger_Name + "," + List_ChengKes[i].Passenger_Id_Type_Code + "," + List_ChengKes[i].Passenger_Id_No + "1_";
+                    uri_checkOrderInfo_2 = "&passengerTicketStr=9,0,1,";
+
+                }
+                else
+                {
+                    uri_checkOrderInfo_2 = "&passengerTicketStr=1,0,1,";
+                }
+                for (int i = 0; i < checkedListBox_ChengKe.Items.Count; i++)
+                {
+                    if (checkedListBox_ChengKe.GetItemChecked(i))
+                    {
+                        if (i > 0)
+                        {
+                            uri_checkOrderInfo_3 = uri_checkOrderInfo_3 + "_" + List_ChengKes[i].Passenger_Name + "," + List_ChengKes[i].Passenger_Id_Type_Code + "," + List_ChengKes[i].Passenger_Id_No + "," + List_ChengKes[i].Mobile_No + ",N," + List_ChengKes[i].AllEncStr;
+                            uri_checkOrderInfo_4 = uri_checkOrderInfo_4 + "&oldPassengerStr=" + List_ChengKes[i].Passenger_Name + "," + List_ChengKes[i].Passenger_Id_Type_Code + "," + List_ChengKes[i].Passenger_Id_No + "1_";
+
+                        }
+                        else
+                        {
+                            uri_checkOrderInfo_3 = List_ChengKes[i].Passenger_Name + "," + List_ChengKes[i].Passenger_Id_Type_Code + "," + List_ChengKes[i].Passenger_Id_No + "," + List_ChengKes[i].Mobile_No + ",N," + List_ChengKes[i].AllEncStr;
+                            uri_checkOrderInfo_4 = "&oldPassengerStr=" + List_ChengKes[i].Passenger_Name + "," + List_ChengKes[i].Passenger_Id_Type_Code + "," + List_ChengKes[i].Passenger_Id_No + "1_";
+                        }
+                    }
+                }
+                uri_checkorderInfo_5 = "&tour_flag=dc&whatsSelect=1&sessionId=&sig=&scene=nc_login&_json_att=&REPEAT_SUBMIT_TOKEN=" + globalRepeatSubmitToken;
+                string uri_checkorderInfo = uri_checkOrderInfo_1 + uri_checkOrderInfo_2 + uri_checkOrderInfo_3 + uri_checkOrderInfo_4 + uri_checkorderInfo_5;
+                var html_checkorderInfo = frm.inter_Form1.post(uri_checkorderInfo);
+                JObject obj_checkorderInfo = (JObject)JsonConvert.DeserializeObject(html_checkorderInfo);//将刚才一大串字符串转换成一个大对象
+                var status1 = obj_checkorderInfo["status"].ToString();
+                if (status1 != "True") { MessageBox.Show("检查选票人错误，请重试"); return; }
+            }
+            catch
+            {
+                MessageBox.Show("检查选票人信息时出错，请检查");
+
+                return;
+            }
+
+            #endregion
+
+            #region 提交订单，获取订单实际情况
+            try
+            {
+                string[] Month = { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
+                var S_Week = dateTimePicker_ChuFaShiJian.Value.DayOfWeek.ToString().Substring(0, 3);
+                var S_Month = Month[dateTimePicker_ChuFaShiJian.Value.Month - 1];
+                var S_Day = dateTimePicker_ChuFaShiJian.Value.Day.ToString();
+                if (S_Day.Length < 2) S_Day= "0"+S_Day;
+                var S_Year = dateTimePicker_ChuFaShiJian.Value.Year.ToString();
+
+                string url_getQueueCount2 = null;
+                string url_getQueueCount1 = "https://kyfw.12306.cn/otn/confirmPassenger/getQueueCount?train_date=" + S_Week + "+" + S_Month + "+" + S_Day + "+" + S_Year + "+00:00:00+GMT+0800+(中国标准时间)&train_no=" + List_HuoChePiao[0].train_no + "&stationTrainCode=" + List_HuoChePiao[0].CheCi;
+                if (List_HuoChePiao[0].CheCi.Substring(0, 1) == "G")
+                {
+                    url_getQueueCount2 = "&seatType=9";
+                }
+                else
+                {
+                    url_getQueueCount2 = "&seatType=1";
+                }
+
+                string url_getQueueCount3 = "&fromStationTelecode=" + frm.ZhanTai[textBox_ChuFaDi.Text] + "&toStationTelecode=" + frm.ZhanTai[textBox_MuDiDi.Text] + "&leftTicket=" + List_HuoChePiao[0].leftTicket + "&purpose_codes=00&train_location=" + List_HuoChePiao[0].train_location + "&_json_att=&REPEAT_SUBMIT_TOKEN=" + globalRepeatSubmitToken;
+                string url_getQueueCount = url_getQueueCount1 + url_getQueueCount2 + url_getQueueCount3;
+
+                var html_getQueueCount = frm.inter_Form1.post(url_getQueueCount);
+                JObject obj_getQueueCount = (JObject)JsonConvert.DeserializeObject(html_getQueueCount);//将刚才一大串字符串转换成一个大对象
+                var status1 = obj_getQueueCount["status"].ToString();
+                if (status1 != "True") { MessageBox.Show("提交订单出错，请重试"); return; }
+
+            }catch
+            {
+                MessageBox.Show("提交订单错误，请检查");
+                return;
+            }
+
+            #endregion
+
+            #region 确认订单
+            string uri_confirmSingleForQueue1 = "https://kyfw.12306.cn/otn/confirmPassenger/confirmSingleForQueue?";
+            string uri_confirmSingleForQueue2 = null;
+            string uri_confirmSingleForQueue3 = null;
+            string uri_confirmSingleForQueue4=null;
+            string uri_confirmSingleForQueue5=null;
+            try
+            {
+
+                //这个判断实际是不对的
+                if (List_HuoChePiao[0].CheCi.Substring(0, 1) == "G")
+                {
+                    uri_confirmSingleForQueue2 = "passengerTicketStr=9,0,1,";
+                }
+                else
+                {
+                    uri_confirmSingleForQueue2 = "passengerTicketStr=1,0,1,";
+                }
+
+                for (int i = 0; i < checkedListBox_ChengKe.Items.Count; i++)
+                {
+                    if (checkedListBox_ChengKe.GetItemChecked(i))
+                    {
+                        if (i > 0)
+                        {
+
+                        }
+                        else
+                        {
+                            uri_confirmSingleForQueue3 = List_ChengKes[i].Passenger_Name + "," + List_ChengKes[i].Passenger_Id_Type_Code + "," + List_ChengKes[i].Passenger_Id_No + "," + List_ChengKes[i].Mobile_No + ",N," + List_ChengKes[i].AllEncStr;
+                            uri_confirmSingleForQueue4 = "&oldPassengerStr=" + List_ChengKes[i].Passenger_Name + "," + List_ChengKes[i].Passenger_Id_Type_Code + "," + List_ChengKes[i].Passenger_Id_No + "1_"; ;
+                        }
+                    }
+                }
+                uri_confirmSingleForQueue5 = "&purpose_codes=00&key_check_isChange=" + key_check_isChange + "&leftTicketStr=" + List_HuoChePiao[0].leftTicket + "&train_location=" + List_HuoChePiao[0].train_no + "&choose_seats=&seatDetailType=000&is_jy=N&is_cj=Y&encryptedData=&whatsSelect=1&roomType=00&dwAll=N&_json_att=&REPEAT_SUBMIT_TOKEN=" + globalRepeatSubmitToken;
+                string uri_confirmSingleForQueue = uri_confirmSingleForQueue1 + uri_confirmSingleForQueue2 + uri_confirmSingleForQueue3 + uri_confirmSingleForQueue4 + uri_confirmSingleForQueue5;
+                var html_confirmSingleForQueue = frm.inter_Form1.post(uri_confirmSingleForQueue);
+                JObject obj_confirmSingleForQueue = (JObject)JsonConvert.DeserializeObject(html_confirmSingleForQueue);//将刚才一大串字符串转换成一个大对象
+                var status2 = obj_confirmSingleForQueue["status"].ToString();
+                if (status2 != "True") { MessageBox.Show("提交订单错误，请重试"); return; }
+            }
+            catch
+            {
+                MessageBox.Show("提交订单出错，请检查程序");
+                return;
+            }
+
+
+            #endregion
+
+            #region 等待购票结果
+            string requestId = null;
+            string orderId=null;
+            try
+            {
+                while (true)
+                {
+                    string uri_queryOrderWaitTime = "https://kyfw.12306.cn/otn/confirmPassenger/queryOrderWaitTime?random=" + new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds() + 3.ToString() + "&tourFlag=dc&_json_att=&REPEAT_SUBMIT_TOKEN=" + globalRepeatSubmitToken;
+                    var html_queryOrderWaitTime = frm.inter_Form1.post(uri_queryOrderWaitTime);
+                    JObject obj_queryOrderWaitTime = (JObject)JsonConvert.DeserializeObject(html_queryOrderWaitTime);//将刚才一大串字符串转换成一个大对象
+                    requestId = obj_queryOrderWaitTime["requestId"].ToString();
+                    orderId = obj_queryOrderWaitTime["orderId"].ToString();
+                    int waitTime = Convert.ToInt32(obj_queryOrderWaitTime["waitTime"]);
+                    if (requestId != null && orderId != null) { break; }
+                    Thread.Sleep(waitTime);
                 }
             }
-            string uri_checkorderInfo_5 = "&tour_flag=dc&whatsSelect=1&sessionId=&sig=&scene=nc_login&_json_att=&REPEAT_SUBMIT_TOKEN=" + globalRepeatSubmitToken;
-            string uri_checkorderInfo = uri_checkOrderInfo_1 + uri_checkOrderInfo_2 + uri_checkOrderInfo_3 + uri_checkOrderInfo_4 + uri_checkorderInfo_5;
-            var html_checkorderInfo = frm.inter_Form1.post(uri_checkorderInfo);
-            JObject obj_checkorderInfo = (JObject)JsonConvert.DeserializeObject(html_checkorderInfo);//将刚才一大串字符串转换成一个大对象
-            var status1 = obj_checkorderInfo["status"];
+            catch
+            {
+                MessageBox.Show("等待购票结果过程出错，请检查程序");
+                return;
 
+            }
 
+            #endregion
+
+            #region 获取订单结果
+            try
+            {
+                string uri_resultOrderForDcQueue = "https://kyfw.12306.cn/otn/confirmPassenger/resultOrderForDcQueue?orderSequence_no=" + orderId + "&_json_att=&REPEAT_SUBMIT_TOKEN=" + globalRepeatSubmitToken;
+                var html_resultOrderForDcQueue = frm.inter_Form1.post(uri_resultOrderForDcQueue);
+                JObject obj_resultOrderForDcQueue = (JObject)JsonConvert.DeserializeObject(html_resultOrderForDcQueue);//将刚才一大串字符串转换成一个大对象
+                var status_resultOrderForDcQueue = obj_resultOrderForDcQueue["status"].ToString();
+                if (status_resultOrderForDcQueue != "True") { MessageBox.Show("获取订单结果出错，请重新确认"); return; }
+
+            }
+            catch
+            {
+                MessageBox.Show("确认订单出错，请检查程序");
+                return;
+            }
 
             #endregion
         }

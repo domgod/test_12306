@@ -30,6 +30,7 @@ namespace test_2306
 
         //用来存储不同城市对应的编码的字典
         public  Dictionary<string, string> ZhanTai = new Dictionary<string, string>();
+        //用来存储不同编码对应的城市的字典
         public Dictionary<string, string> BianMa = new Dictionary<string, string>();
         //用来存放每一列火车的信息
         Dictionary<string, string> HuoChePiaoInfo = new Dictionary<string, string>();

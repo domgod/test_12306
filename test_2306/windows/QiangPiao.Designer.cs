@@ -39,7 +39,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.checkedListBox_ChengKe = new System.Windows.Forms.CheckedListBox();
-            this.button1 = new System.Windows.Forms.Button();
+            this.button_QueRenChengCheRen = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // button_QiangPiao
@@ -133,22 +133,22 @@
             this.checkedListBox_ChengKe.Size = new System.Drawing.Size(151, 308);
             this.checkedListBox_ChengKe.TabIndex = 26;
             // 
-            // button1
+            // button_QueRenChengCheRen
             // 
-            this.button1.Location = new System.Drawing.Point(93, 105);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 27;
-            this.button1.Text = "确认";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.button_QueRenChengCheRen.Location = new System.Drawing.Point(93, 105);
+            this.button_QueRenChengCheRen.Name = "button_QueRenChengCheRen";
+            this.button_QueRenChengCheRen.Size = new System.Drawing.Size(75, 23);
+            this.button_QueRenChengCheRen.TabIndex = 27;
+            this.button_QueRenChengCheRen.Text = "确认";
+            this.button_QueRenChengCheRen.UseVisualStyleBackColor = true;
+            this.button_QueRenChengCheRen.Click += new System.EventHandler(this.button_QueRenChengCheRen_Click);
             // 
             // QiangPiao
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.button_QueRenChengCheRen);
             this.Controls.Add(this.checkedListBox_ChengKe);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.button_QiangPiao);
@@ -180,6 +180,6 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.CheckedListBox checkedListBox_ChengKe;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button button_QueRenChengCheRen;
     }
 }

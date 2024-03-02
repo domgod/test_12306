@@ -13,7 +13,10 @@ namespace test_2306.data
     internal class HuoChePiao
     {
         public string BianMa;       //火车编码
+        public string train_no;      //火车号（完整）
         public String CheCi;       //车次
+        public string leftTicket;
+        public string train_location;
         public String ShiFaDi;     //火车始发站
         public string ZhongDian;   //火车终点站
         public string ShangCheDian;//上火车点
@@ -42,7 +45,10 @@ namespace test_2306.data
             {
                 string[] HuoChePiaos = str.Substring(5). Split('|');
                 this.BianMa = HuoChePiaos[0];
+                this.train_no = HuoChePiaos[2];
                 this.CheCi = HuoChePiaos[3];
+                this.leftTicket = HuoChePiaos[12];
+                this.train_location= HuoChePiaos[15];
                 this.ShiFaDi = HuoChePiaos[4];
                 this.ZhongDian = HuoChePiaos[5];
                 this.ShangCheDian = HuoChePiaos[6];
