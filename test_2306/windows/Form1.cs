@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Printing;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -14,6 +15,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml.Linq;
+using test_2306.data;
 using test_2306.InterWork;
 using test_2306.windows;
 
@@ -27,6 +29,8 @@ namespace test_2306
         public YanZhengMa YanZhengMa1;
         //存放抢票页面的数据
         public QiangPiao QiangPiao1;
+        //用来存放账户中乘车人的信息；
+        public List<ChengKe> List_ChengKes=new List<ChengKe>();
 
         //用来存储不同城市对应的编码的字典
         public  Dictionary<string, string> ZhanTai = new Dictionary<string, string>();
@@ -191,8 +195,25 @@ namespace test_2306
 
         private void button_QiangPiao_Click(object sender, EventArgs e)
         {
-           QiangPiao1= new QiangPiao(this);
-           QiangPiao1.ShowDialog();
+          
+            string uri_query = "https://kyfw.12306.cn/otn/passengers/query?pageIndex=1&pageSize=10";
+            string html_query=inter_Form1.post(uri_query);
+            JObject obj_query = (JObject)JsonConvert.DeserializeObject(html_query);//将刚才一大串字符串转换成一个大对象
+            var normal_passengers = obj_query["data"]["datas"];
+
+            foreach (var passenger in normal_passengers)
+            {
+                ChengKe ck = new ChengKe();
+                ck.Passenger_Name = passenger["passenger_name"].ToString();
+                ck.Passenger_Id_Type_Code = passenger["passenger_id_type_code"].ToString();
+                ck.Passenger_Id_No = passenger["passenger_id_no"].ToString();
+                ck.Mobile_No = passenger["mobile_no"].ToString();
+                ck.AllEncStr = passenger["allEncStr"].ToString();
+                List_ChengKes.Add(ck);
+            }
+            QiangPiao1 = new QiangPiao(this);
+            QiangPiao1.ShowDialog();
+
         }
     }
 }

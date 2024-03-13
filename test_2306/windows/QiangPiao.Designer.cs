@@ -141,7 +141,6 @@
             this.button_QueRenChengCheRen.TabIndex = 27;
             this.button_QueRenChengCheRen.Text = "确认";
             this.button_QueRenChengCheRen.UseVisualStyleBackColor = true;
-            this.button_QueRenChengCheRen.Click += new System.EventHandler(this.button_QueRenChengCheRen_Click);
             // 
             // QiangPiao
             // 
@@ -162,6 +161,7 @@
             this.Controls.Add(this.label1);
             this.Name = "QiangPiao";
             this.Text = "QiangPiao";
+            this.Load += new System.EventHandler(this.QiangPiao_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
