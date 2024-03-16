@@ -10,7 +10,7 @@ using System.Windows.Forms;
 
 namespace test_2306.data
 {
-    internal class HuoChePiao
+    public class HuoChePiao
     {
         public string BianMa;       //火车编码
         public string train_no;      //火车号（完整）
@@ -38,6 +38,20 @@ namespace test_2306.data
         public string Bed_Level_Info;   
         public string Seat_Discount_Info;
 
+        public string seat_type;  //座位类型
+        #region 座位类型
+        //BUSINESS_SEAT (32, "9", "A9","商务座"),
+        //FIRST_SEAT    (31, "M", "M","一等座"),
+        //SECOND_SEAT   (30, "O", "O","二等座"),
+        //SOFT_SEAT     (24, "2", "A2","软座"),
+        //HARD_SEAT     (29, "1", "A1","硬座"),
+        //NONE_SEAT     (26, "1", "WZ","无座"),
+        //HIGH_SOFT_SLEEP(21, "6", "A6","高级软卧"),
+        //SOFT_SLEEP    (23, "4", "A4","软卧"),
+        //MOTOR_SLEEP   (27, "F", "F","动卧"),
+        //HARD_SLEEP    (28, "3", "A3", "硬卧");
+        #endregion
+        
 
         public HuoChePiao(string str )
         {
@@ -77,5 +91,15 @@ namespace test_2306.data
             }
         }
         public HuoChePiao() { }
+
+        public string GetSeat_Type()
+        {
+            return seat_type;
+        }
+        public void SetSeat_Type(string seattype)
+        {
+            seat_type=seattype;
+        }
+
     }
 }

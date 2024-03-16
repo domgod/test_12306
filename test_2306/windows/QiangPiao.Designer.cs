@@ -39,7 +39,8 @@
             this.label1 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.checkedListBox_ChengKe = new System.Windows.Forms.CheckedListBox();
-            this.button_QueRenChengCheRen = new System.Windows.Forms.Button();
+            this.checkedListBox_SeatType = new System.Windows.Forms.CheckedListBox();
+            this.textBox_XinXiTiShi = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // button_QiangPiao
@@ -133,21 +134,29 @@
             this.checkedListBox_ChengKe.Size = new System.Drawing.Size(151, 308);
             this.checkedListBox_ChengKe.TabIndex = 26;
             // 
-            // button_QueRenChengCheRen
+            // checkedListBox_SeatType
             // 
-            this.button_QueRenChengCheRen.Location = new System.Drawing.Point(93, 105);
-            this.button_QueRenChengCheRen.Name = "button_QueRenChengCheRen";
-            this.button_QueRenChengCheRen.Size = new System.Drawing.Size(75, 23);
-            this.button_QueRenChengCheRen.TabIndex = 27;
-            this.button_QueRenChengCheRen.Text = "确认";
-            this.button_QueRenChengCheRen.UseVisualStyleBackColor = true;
+            this.checkedListBox_SeatType.FormattingEnabled = true;
+            this.checkedListBox_SeatType.Location = new System.Drawing.Point(195, 130);
+            this.checkedListBox_SeatType.Name = "checkedListBox_SeatType";
+            this.checkedListBox_SeatType.Size = new System.Drawing.Size(151, 308);
+            this.checkedListBox_SeatType.TabIndex = 28;
+            // 
+            // textBox_XinXiTiShi
+            // 
+            this.textBox_XinXiTiShi.Location = new System.Drawing.Point(517, 1);
+            this.textBox_XinXiTiShi.Multiline = true;
+            this.textBox_XinXiTiShi.Name = "textBox_XinXiTiShi";
+            this.textBox_XinXiTiShi.Size = new System.Drawing.Size(283, 446);
+            this.textBox_XinXiTiShi.TabIndex = 29;
             // 
             // QiangPiao
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Controls.Add(this.button_QueRenChengCheRen);
+            this.Controls.Add(this.textBox_XinXiTiShi);
+            this.Controls.Add(this.checkedListBox_SeatType);
             this.Controls.Add(this.checkedListBox_ChengKe);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.button_QiangPiao);
@@ -180,6 +189,7 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.CheckedListBox checkedListBox_ChengKe;
-        private System.Windows.Forms.Button button_QueRenChengCheRen;
+        private System.Windows.Forms.CheckedListBox checkedListBox_SeatType;
+        private System.Windows.Forms.TextBox textBox_XinXiTiShi;
     }
 }
