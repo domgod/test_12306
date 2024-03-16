@@ -15,11 +15,30 @@ namespace test_2306.InterWork
 {
     public class inter
     {
+        int UserAgentInfoIndex = 0;
         CookieContainer cookieContainer;
-        public inter() { }
+        string[] UserAgentInfos = new string[]
+        {
+            "Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.1; Trident/4.0; Hot Lingo 2.0)",
+            "Mozilla/5.0 (Windows NT 6.2; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.90 Safari/537.36",
+            "Mozilla/5.0 (Windows NT 6.3; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.70 Safari/537.36",
+            "Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 6.1; Trident/4.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; MATP; InfoPath.2; .NET4.0C; CIBA; Maxthon 2.0)\r\n————————————————\r\n\r\n                            版权声明：本文为博主原创文章，遵循 CC 4.0 BY-SA 版权协议，转载请附上原文出处链接和本声明。\r\n                        \r\n原文链接：https://blog.csdn.net/szsbell/article/details/107981668",
+            "Mozilla/5.0 (Windows NT 5.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/28.0.1500.71 Safari/537.36",
+            "Mozilla/5.0 (Windows NT 6.3; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.70 Safari/537.36"
+        };
+
+
+        public inter()
+        {
+            Random rd = new Random();
+            UserAgentInfoIndex = rd.Next(0, 5);
+        }
         public inter(CookieContainer cookieContainer)
         {
             this.cookieContainer = cookieContainer;
+            Random rd = new Random();
+            UserAgentInfoIndex = rd.Next(0, 5);
+
         }
 
         public string post(string uri)
@@ -31,14 +50,16 @@ namespace test_2306.InterWork
             /// <param name="refererUri">来源url</param>
             /// <param name="encodingName">编码名称 例如：gb2312</param>
             /// <returns></returns>
+            
             string encodingName = "utf-8";
             string refererUri = string.Empty;
             string Date = string.Empty;
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(uri);
             request.ContentType = "text/html;charset=" + encodingName;
             request.Method = "Get";
-           // request.UserAgent = "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.26 Safari/537.36 Core/1.63.5221.400 QQBrowser/10.0.1125.400";
-            request.UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36 SLBrowser/9.0.0.10191 SLBChan/112";
+            request.UserAgent= UserAgentInfos[UserAgentInfoIndex];
+            //// request.UserAgent = "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.26 Safari/537.36 Core/1.63.5221.400 QQBrowser/10.0.1125.400";
+            //request.UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36 SLBrowser/9.0.0.10191 SLBChan/112";
 
             if (cookieContainer != null) request.CookieContainer=cookieContainer;
 
@@ -110,9 +131,7 @@ namespace test_2306.InterWork
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(uri);
             request.ContentType = "text/html;charset=" + encodingName;
             request.Method = "Get";
-           // request.UserAgent = "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.26 Safari/537.36 Core/1.63.5221.400 QQBrowser/10.0.1125.400";
-            request.UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36 SLBrowser/9.0.0.10191 SLBChan/112";
-
+            request.UserAgent = UserAgentInfos[UserAgentInfoIndex];
             if (cookieContainer != null) request.CookieContainer = cookieContainer;
 
             if (!string.IsNullOrEmpty(refererUri))
@@ -185,9 +204,7 @@ namespace test_2306.InterWork
             request.Method = "Post";
             request.ContentLength = 0;
             request.ServicePoint.Expect100Continue = false;
-            //request.UserAgent = "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.26 Safari/537.36 Core/1.63.5221.400 QQBrowser/10.0.1125.400";
-            request.UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36 SLBrowser/9.0.0.10191 SLBChan/112";
-
+            request.UserAgent = UserAgentInfos[UserAgentInfoIndex];
             if (cookieContainer != null) request.CookieContainer = cookieContainer;
 
             if (!string.IsNullOrEmpty(refererUri))
@@ -365,7 +382,7 @@ namespace test_2306.InterWork
                     case "F": uri_checkOrderInfo_2 = "F,0,1,"; break;
                     default: break;
                 }
-                if (i==0||i==ChengKeInfo.Count-1)
+                if (ChengKeInfo.Count ==1|| i==ChengKeInfo.Count-1)
                 {
                     uri_checkOrderInfo_3 = ChengKeInfo[i].Passenger_Name + "," + ChengKeInfo[i].Passenger_Id_Type_Code + "," + ChengKeInfo[i].Passenger_Id_No + "," + ChengKeInfo[i].Mobile_No + ",N," + ChengKeInfo[i].AllEncStr;
                 }
@@ -477,7 +494,7 @@ namespace test_2306.InterWork
                     case "F": uri_confirmSingleForQueue6 = "F,0,1,"; break;
                     default: break;
                 }
-                if (i == 0 || i == ChengKeInfo.Count - 1)
+                if (ChengKeInfo.Count == 1 || i == ChengKeInfo.Count - 1)
                 {
                     uri_confirmSingleForQueue3 = ChengKeInfo[i].Passenger_Name + "," + ChengKeInfo[i].Passenger_Id_Type_Code + "," + ChengKeInfo[i].Passenger_Id_No + "," + ChengKeInfo[i].Mobile_No + ",N," + ChengKeInfo[i].AllEncStr;
                 }
@@ -514,7 +531,6 @@ namespace test_2306.InterWork
         public string post_queryOrderWaitTime(string globalRepeatSubmitToken)
         {
             #region 等待购票结果
-            string requestId = null;
             string orderId = null;
             string html_queryOrderWaitTime = null;
             
@@ -541,7 +557,7 @@ namespace test_2306.InterWork
             #region 获取订单结果
            
             string uri_resultOrderForDcQueue = "https://kyfw.12306.cn/otn/confirmPassenger/resultOrderForDcQueue?orderSequence_no=" + orderId + "&_json_att=&REPEAT_SUBMIT_TOKEN=" + globalRepeatSubmitToken;
-                html_resultOrderForDcQueue = this.post(uri_resultOrderForDcQueue);
+            html_resultOrderForDcQueue = this.post(uri_resultOrderForDcQueue);
             JObject obj_resultOrderForDcQueue = (JObject)JsonConvert.DeserializeObject(html_resultOrderForDcQueue);//将刚才一大串字符串转换成一个大对象
             var submitStatus_resultOrderForDcQueue = obj_resultOrderForDcQueue["data"]["submitStatus"].ToString();
             if (submitStatus_resultOrderForDcQueue == "True") { MessageBox.Show("购票成功"); return GouPiaoChengGong = true; }
