@@ -79,7 +79,7 @@ namespace test_2306
                     BianMa.Add(VALUE, KEY);
                 }
             }
-            listView1.Visible = false;
+           
             button_ZhuXiao.Visible = false;
         }
 
@@ -87,69 +87,76 @@ namespace test_2306
         private void ChaXun_Click(object sender, EventArgs e)
         {
             //清除表格残留数据
-            listView1.Columns.Clear();
-            listView1.Items.Clear();
-            string FormAddress = ZhanTai[textBox_ChuFaDi.Text] ;
-            string ToAddress = ZhanTai[textBox_MuDiDi.Text];
-            string uri = "https://kyfw.12306.cn/otn/leftTicket/queryE?leftTicketDTO.train_date=" + dateTimePicker_ChuFaShiJian.Value.ToString("yyyy-MM-dd") + "&leftTicketDTO.from_station=" + FormAddress + "&leftTicketDTO.to_station=" + ToAddress + "&purpose_codes=ADULT";
-           string html = string.Empty;
-            html = inter_Form1.post(uri);
-           // 
-            JObject obj = (JObject)JsonConvert.DeserializeObject(html);//将刚才一大串字符串转换成一个大对象
-            string data = obj["data"]["result"].ToString();
-            string[] HuoCheInfos=data.Split(',');
-            string s = "";
-            //j用来标志是第一次循环吗
-            for(int i = 0,j=1;i < HuoCheInfos.Length;i++,j++)
+           
+
+            try
             {
-                if(i%2==1)
+                listView1.Columns.Clear();
+                listView1.Items.Clear();
+                string FormAddress = ZhanTai[textBox_ChuFaDi.Text];
+                string ToAddress = ZhanTai[textBox_MuDiDi.Text];
+                string uri = "https://kyfw.12306.cn/otn/leftTicket/queryE?leftTicketDTO.train_date=" + dateTimePicker_ChuFaShiJian.Value.ToString("yyyy-MM-dd") + "&leftTicketDTO.from_station=" + FormAddress + "&leftTicketDTO.to_station=" + ToAddress + "&purpose_codes=ADULT";
+                string html = string.Empty;
+                html = inter_Form1.post(uri);
+                // 
+                JObject obj = (JObject)JsonConvert.DeserializeObject(html);//将刚才一大串字符串转换成一个大对象
+                string data = obj["data"]["result"].ToString();
+                string[] HuoCheInfos = data.Split(',');
+                string s = "";
+                //j用来标志是第一次循环吗
+                for (int i = 0, j = 1; i < HuoCheInfos.Length; i++, j++)
                 {
-                    continue;
-                }
-                string[] HuoChePiaos = HuoCheInfos[i].Split('|');
-                HuoChePiaoInfo.Add("车次", HuoChePiaos[3]);
-                HuoChePiaoInfo.Add("火车始发地", BianMa[HuoChePiaos[4]]);
-                HuoChePiaoInfo.Add("火车终点站", BianMa[HuoChePiaos[5]]);
-                HuoChePiaoInfo.Add("上车站", BianMa[HuoChePiaos[6]]);
-                HuoChePiaoInfo.Add("下车站", BianMa[HuoChePiaos[7]]);
-                HuoChePiaoInfo.Add("出发时间", HuoChePiaos[8]);
-                HuoChePiaoInfo.Add("到达时间", HuoChePiaos[9]);
-                HuoChePiaoInfo.Add("历时", HuoChePiaos[10]);
-               // HuoChePiaoInfo.Add("软座", HuoChePiaos[25]);
-               // HuoChePiaoInfo.Add("动卧", HuoChePiaos[27]);
-                HuoChePiaoInfo.Add("高级软卧", HuoChePiaos[21]==""?"无": HuoChePiaos[21]);
-                HuoChePiaoInfo.Add("软卧（一等卧）", HuoChePiaos[23] == "" ? "无" : HuoChePiaos[23]);
-                HuoChePiaoInfo.Add("无座", HuoChePiaos[26] == "" ? "无" : HuoChePiaos[26]);
-                HuoChePiaoInfo.Add("硬卧（二等座）", HuoChePiaos[28] == "" ? "无" : HuoChePiaos[28]);
-                HuoChePiaoInfo.Add("硬座", HuoChePiaos[29] == "" ? "无" : HuoChePiaos[29]);
-                HuoChePiaoInfo.Add("二等座（二等包座）", HuoChePiaos[30] == "" ? "无" : HuoChePiaos[30]);   
-                HuoChePiaoInfo.Add("一等座", HuoChePiaos[31] == "" ? "无" : HuoChePiaos[31]); 
-                HuoChePiaoInfo.Add("商务座", HuoChePiaos[32] == "" ? "无" : HuoChePiaos[32]);
-                foreach (string key in HuoChePiaoInfo.Keys)
-                {
-                    s = s +" "+ key + "=" +HuoChePiaoInfo[key]+";";
-                   
+                    if (i % 2 == 1)
+                    {
+                        continue;
+                    }
+                    string[] HuoChePiaos = HuoCheInfos[i].Split('|');
+                    HuoChePiaoInfo.Add("车次", HuoChePiaos[3]);
+                    HuoChePiaoInfo.Add("火车始发地", BianMa[HuoChePiaos[4]]);
+                    HuoChePiaoInfo.Add("火车终点站", BianMa[HuoChePiaos[5]]);
+                    HuoChePiaoInfo.Add("上车站", BianMa[HuoChePiaos[6]]);
+                    HuoChePiaoInfo.Add("下车站", BianMa[HuoChePiaos[7]]);
+                    HuoChePiaoInfo.Add("出发时间", HuoChePiaos[8]);
+                    HuoChePiaoInfo.Add("到达时间", HuoChePiaos[9]);
+                    HuoChePiaoInfo.Add("历时", HuoChePiaos[10]);
+                    // HuoChePiaoInfo.Add("软座", HuoChePiaos[25]);
+                    // HuoChePiaoInfo.Add("动卧", HuoChePiaos[27]);
+                    HuoChePiaoInfo.Add("高级软卧", HuoChePiaos[21] == "" ? "无" : HuoChePiaos[21]);
+                    HuoChePiaoInfo.Add("软卧（一等卧）", HuoChePiaos[23] == "" ? "无" : HuoChePiaos[23]);
+                    HuoChePiaoInfo.Add("无座", HuoChePiaos[26] == "" ? "无" : HuoChePiaos[26]);
+                    HuoChePiaoInfo.Add("硬卧（二等座）", HuoChePiaos[28] == "" ? "无" : HuoChePiaos[28]);
+                    HuoChePiaoInfo.Add("硬座", HuoChePiaos[29] == "" ? "无" : HuoChePiaos[29]);
+                    HuoChePiaoInfo.Add("二等座（二等包座）", HuoChePiaos[30] == "" ? "无" : HuoChePiaos[30]);
+                    HuoChePiaoInfo.Add("一等座", HuoChePiaos[31] == "" ? "无" : HuoChePiaos[31]);
+                    HuoChePiaoInfo.Add("商务座", HuoChePiaos[32] == "" ? "无" : HuoChePiaos[32]);
+                    foreach (string key in HuoChePiaoInfo.Keys)
+                    {
+                        s = s + " " + key + "=" + HuoChePiaoInfo[key] + ";";
+
+
+                    }
+                    //将火车票数据写入表格中
+                    ////添加表格行表头
+                    var ListView1_Item = listView1.Items.Add(HuoChePiaoInfo["车次"]);
+                    foreach (string key in HuoChePiaoInfo.Keys)
+                    {
+                        //添加表格列表头
+                        if (j == 1) { listView1.Columns.Add(key); }
+                        //添加表格行数据
+                        if (key == "车次") { continue; }
+                        ListView1_Item.SubItems.Add(HuoChePiaoInfo[key]);
+
+                    }
+                    HuoChePiaoInfo.Clear();
 
                 }
-                //将火车票数据写入表格中
-                ////添加表格行表头
-                var ListView1_Item= listView1.Items.Add(HuoChePiaoInfo["车次"]);
-                foreach (string key in HuoChePiaoInfo.Keys)
-                {
-                    //添加表格列表头
-                    if (j == 1) { listView1.Columns.Add(key); }
-                    //添加表格行数据
-                    if (key == "车次") { continue; }
-                    ListView1_Item.SubItems.Add(HuoChePiaoInfo[key]);
-
-                }
-                s =s + "\r\n\r\n";
-                HuoChePiaoInfo.Clear();
-
             }
-            textBox1.Text = s;
-            textBox1.Visible = false;
-            listView1.Visible = true;
+            catch
+            {
+                MessageBox.Show("火车票查询出错，请检查数据或登陆后再查询");
+                
+            }
+            
 
         }
       
@@ -195,25 +202,36 @@ namespace test_2306
 
         private void button_QiangPiao_Click(object sender, EventArgs e)
         {
-          
-            string uri_query = "https://kyfw.12306.cn/otn/passengers/query?pageIndex=1&pageSize=10";
-            string html_query=inter_Form1.post(uri_query);
-            JObject obj_query = (JObject)JsonConvert.DeserializeObject(html_query);//将刚才一大串字符串转换成一个大对象
-            var normal_passengers = obj_query["data"]["datas"];
-
-            foreach (var passenger in normal_passengers)
+            try
             {
-                ChengKe ck = new ChengKe();
-                ck.Passenger_Name = passenger["passenger_name"].ToString();
-                ck.Passenger_Id_Type_Code = passenger["passenger_id_type_code"].ToString();
-                ck.Passenger_Id_No = passenger["passenger_id_no"].ToString();
-                ck.Mobile_No = passenger["mobile_no"].ToString();
-                ck.AllEncStr = passenger["allEncStr"].ToString();
-                List_ChengKes.Add(ck);
-            }
-            QiangPiao1 = new QiangPiao(this);
-            QiangPiao1.ShowDialog();
+                string uri_query = "https://kyfw.12306.cn/otn/passengers/query?pageIndex=1&pageSize=10";
+                string html_query = inter_Form1.post(uri_query);
+                JObject obj_query = (JObject)JsonConvert.DeserializeObject(html_query);//将刚才一大串字符串转换成一个大对象
+                var normal_passengers = obj_query["data"]["datas"];
 
+                foreach (var passenger in normal_passengers)
+                {
+                    ChengKe ck = new ChengKe();
+                    ck.Passenger_Name = passenger["passenger_name"].ToString();
+                    ck.Passenger_Id_Type_Code = passenger["passenger_id_type_code"].ToString();
+                    ck.Passenger_Id_No = passenger["passenger_id_no"].ToString();
+                    ck.Mobile_No = passenger["mobile_no"].ToString();
+                    ck.AllEncStr = passenger["allEncStr"].ToString();
+                    List_ChengKes.Add(ck);
+                }
+                QiangPiao1 = new QiangPiao(this);
+                QiangPiao1.ShowDialog();
+            }catch
+            {
+                MessageBox.Show("请登陆后再抢票");
+            }
+           
+
+        }
+
+        private void dateTimePicker_ChuFaShiJian_ValueChanged(object sender, EventArgs e)
+        {
+            dateTimePicker_FanHuiShiJian.Value = dateTimePicker_ChuFaShiJian.Value;
         }
     }
 }

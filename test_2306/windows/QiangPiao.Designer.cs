@@ -41,11 +41,12 @@
             this.checkedListBox_ChengKe = new System.Windows.Forms.CheckedListBox();
             this.checkedListBox_SeatType = new System.Windows.Forms.CheckedListBox();
             this.textBox_XinXiTiShi = new System.Windows.Forms.TextBox();
+            this.label6 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // button_QiangPiao
             // 
-            this.button_QiangPiao.Location = new System.Drawing.Point(394, 34);
+            this.button_QiangPiao.Location = new System.Drawing.Point(296, 40);
             this.button_QiangPiao.Name = "button_QiangPiao";
             this.button_QiangPiao.Size = new System.Drawing.Size(75, 23);
             this.button_QiangPiao.TabIndex = 23;
@@ -55,16 +56,16 @@
             // 
             // textBox_ChuFaDi
             // 
-            this.textBox_ChuFaDi.Location = new System.Drawing.Point(74, 64);
+            this.textBox_ChuFaDi.Location = new System.Drawing.Point(74, 42);
             this.textBox_ChuFaDi.Name = "textBox_ChuFaDi";
-            this.textBox_ChuFaDi.Size = new System.Drawing.Size(99, 21);
+            this.textBox_ChuFaDi.Size = new System.Drawing.Size(63, 21);
             this.textBox_ChuFaDi.TabIndex = 22;
             // 
             // textBox_MuDiDi
             // 
-            this.textBox_MuDiDi.Location = new System.Drawing.Point(261, 64);
+            this.textBox_MuDiDi.Location = new System.Drawing.Point(210, 42);
             this.textBox_MuDiDi.Name = "textBox_MuDiDi";
-            this.textBox_MuDiDi.Size = new System.Drawing.Size(110, 21);
+            this.textBox_MuDiDi.Size = new System.Drawing.Size(65, 21);
             this.textBox_MuDiDi.TabIndex = 21;
             // 
             // dateTimePicker_FanHuiShiJian
@@ -80,11 +81,12 @@
             this.dateTimePicker_ChuFaShiJian.Name = "dateTimePicker_ChuFaShiJian";
             this.dateTimePicker_ChuFaShiJian.Size = new System.Drawing.Size(113, 21);
             this.dateTimePicker_ChuFaShiJian.TabIndex = 19;
+            this.dateTimePicker_ChuFaShiJian.ValueChanged += new System.EventHandler(this.dateTimePicker_ChuFaShiJian_ValueChanged);
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(18, 67);
+            this.label4.Location = new System.Drawing.Point(18, 45);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(53, 12);
             this.label4.TabIndex = 18;
@@ -93,7 +95,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(202, 67);
+            this.label3.Location = new System.Drawing.Point(151, 45);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(53, 12);
             this.label3.TabIndex = 17;
@@ -120,7 +122,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(18, 105);
+            this.label5.Location = new System.Drawing.Point(40, 71);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(53, 12);
             this.label5.TabIndex = 25;
@@ -129,32 +131,42 @@
             // checkedListBox_ChengKe
             // 
             this.checkedListBox_ChengKe.FormattingEnabled = true;
-            this.checkedListBox_ChengKe.Location = new System.Drawing.Point(22, 130);
+            this.checkedListBox_ChengKe.Location = new System.Drawing.Point(20, 96);
             this.checkedListBox_ChengKe.Name = "checkedListBox_ChengKe";
-            this.checkedListBox_ChengKe.Size = new System.Drawing.Size(151, 308);
+            this.checkedListBox_ChengKe.Size = new System.Drawing.Size(86, 308);
             this.checkedListBox_ChengKe.TabIndex = 26;
             // 
             // checkedListBox_SeatType
             // 
             this.checkedListBox_SeatType.FormattingEnabled = true;
-            this.checkedListBox_SeatType.Location = new System.Drawing.Point(195, 130);
+            this.checkedListBox_SeatType.Location = new System.Drawing.Point(119, 96);
             this.checkedListBox_SeatType.Name = "checkedListBox_SeatType";
-            this.checkedListBox_SeatType.Size = new System.Drawing.Size(151, 308);
+            this.checkedListBox_SeatType.Size = new System.Drawing.Size(90, 308);
             this.checkedListBox_SeatType.TabIndex = 28;
             // 
             // textBox_XinXiTiShi
             // 
-            this.textBox_XinXiTiShi.Location = new System.Drawing.Point(517, 1);
+            this.textBox_XinXiTiShi.Location = new System.Drawing.Point(218, 71);
             this.textBox_XinXiTiShi.Multiline = true;
             this.textBox_XinXiTiShi.Name = "textBox_XinXiTiShi";
-            this.textBox_XinXiTiShi.Size = new System.Drawing.Size(283, 446);
+            this.textBox_XinXiTiShi.Size = new System.Drawing.Size(176, 333);
             this.textBox_XinXiTiShi.TabIndex = 29;
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(125, 71);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(77, 12);
+            this.label6.TabIndex = 30;
+            this.label6.Text = "选择座位类型";
             // 
             // QiangPiao
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(394, 404);
+            this.Controls.Add(this.label6);
             this.Controls.Add(this.textBox_XinXiTiShi);
             this.Controls.Add(this.checkedListBox_SeatType);
             this.Controls.Add(this.checkedListBox_ChengKe);
@@ -191,5 +203,6 @@
         private System.Windows.Forms.CheckedListBox checkedListBox_ChengKe;
         private System.Windows.Forms.CheckedListBox checkedListBox_SeatType;
         private System.Windows.Forms.TextBox textBox_XinXiTiShi;
+        private System.Windows.Forms.Label label6;
     }
 }

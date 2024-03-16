@@ -15,14 +15,14 @@ namespace test_2306.InterWork
 {
     public class inter
     {
-        int UserAgentInfoIndex = 0;
+        int UserAgentInfoIndex ;
         CookieContainer cookieContainer;
         string[] UserAgentInfos = new string[]
         {
             "Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.1; Trident/4.0; Hot Lingo 2.0)",
             "Mozilla/5.0 (Windows NT 6.2; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.90 Safari/537.36",
             "Mozilla/5.0 (Windows NT 6.3; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.70 Safari/537.36",
-            "Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 6.1; Trident/4.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; MATP; InfoPath.2; .NET4.0C; CIBA; Maxthon 2.0)\r\n————————————————\r\n\r\n                            版权声明：本文为博主原创文章，遵循 CC 4.0 BY-SA 版权协议，转载请附上原文出处链接和本声明。\r\n                        \r\n原文链接：https://blog.csdn.net/szsbell/article/details/107981668",
+            "Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 6.1; Trident/4.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; MATP; InfoPath.2; .NET4.0C; CIBA; Maxthon 2.0)",
             "Mozilla/5.0 (Windows NT 5.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/28.0.1500.71 Safari/537.36",
             "Mozilla/5.0 (Windows NT 6.3; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.70 Safari/537.36"
         };
@@ -261,15 +261,16 @@ namespace test_2306.InterWork
         }
 
         //查询登陆状态
-        public void post_checkUser()
+        public bool post_checkUser()
         {
             string html_CheckUser = null;
            
             string uri_CheckUser = "https://kyfw.12306.cn/otn/login/checkUser?_json_att=";
             html_CheckUser = this.post(uri_CheckUser);
             JObject obj_CheckUser = (JObject)JsonConvert.DeserializeObject(html_CheckUser);//将刚才一大串字符串转换成一个大对象
-            string status = obj_CheckUser["status"].ToString();
-            if (status != "True") { MessageBox.Show("系统没有登陆，请登陆");return; }
+            string flag = obj_CheckUser["data"]["flag"].ToString();
+            if (flag != "True") { MessageBox.Show("系统没有登陆，请登陆");return false; }
+            else { return true; }
            
             
         }
@@ -301,7 +302,7 @@ namespace test_2306.InterWork
         }
 
         //预定火车票
-        public string  post_submitOrderRequest(string secretStr,string GoDate,string BackDate,string FromStationName,string ToStationName,string BedLevelInfo,string SeatDiscountInfo)
+        public bool  post_submitOrderRequest(string secretStr,string GoDate,string BackDate,string FromStationName,string ToStationName,string BedLevelInfo,string SeatDiscountInfo)
         {
             string html_submitOrderRequest = null;
             
@@ -309,8 +310,8 @@ namespace test_2306.InterWork
             html_submitOrderRequest = this.post(uri_submitOrderRequest);
             JObject obj_submitOrderRequest = (JObject)JsonConvert.DeserializeObject(html_submitOrderRequest);//将刚才一大串字符串转换成一个大对象
             string status = obj_submitOrderRequest["status"].ToString();
-            if (status != "True") { MessageBox.Show("无可用火车票或预定失败，请重试"); return "火车票预定失败，正在重新预定..."; }
-            else return "正在预定火车票....";
+            if (status != "True") { return false;  /*return "火车票预定失败，正在重新预定...";*/ }
+            else return true;  /*"正在预定火车票...."*/;
             
         }
        
@@ -359,7 +360,7 @@ namespace test_2306.InterWork
         }
 
         //检查选票人信息
-        public void post_checkorderInfo(HuoChePiao HuoChePiaoInfo,List<ChengKe> ChengKeInfo,string globalRepeatSubmitToken)
+        public bool post_checkorderInfo(HuoChePiao HuoChePiaoInfo,List<ChengKe> ChengKeInfo,string globalRepeatSubmitToken)
         {
             string html_checkorderInfo=null;
             string uri_checkOrderInfo_1 = "https://kyfw.12306.cn/otn/confirmPassenger/checkOrderInfo?cancel_flag=2&bed_level_order_num=000000000000000000000000000000";
@@ -405,8 +406,9 @@ namespace test_2306.InterWork
             Thread.Sleep(900);
             html_checkorderInfo = this.post1(uri_checkorderInfo);
             JObject obj_checkorderInfo = (JObject)JsonConvert.DeserializeObject(html_checkorderInfo);//将刚才一大串字符串转换成一个大对象
-            var status1 = obj_checkorderInfo["status"].ToString();
-            if (status1 != "True") { MessageBox.Show("检查选票人错误，请重试"); return; }
+            var obj_submitStatus = obj_checkorderInfo["status"]["submitStatus"].ToString();
+            if (obj_submitStatus != "True") {  return false; }
+            else { return true; }
            
         }
 
@@ -458,14 +460,14 @@ namespace test_2306.InterWork
             html_getQueueCount = this.post(url_getQueueCount);
             JObject obj_getQueueCount = (JObject)JsonConvert.DeserializeObject(html_getQueueCount);//将刚才一大串字符串转换成一个大对象
             var status1 = obj_getQueueCount["status"].ToString();
-            if (status1 != "True") { MessageBox.Show("提交订单出错，请重试"); return "提交订单出错，正在重试..."; }
+            if (status1 != "True") { return "提交订单出错，正在重试..."; }
             else return "提交订单成功...";
            
             #endregion
         }
 
         //确认订单
-        public void post_confirmSingleForQueue(HuoChePiao HuoChePiaoInfo,List<ChengKe> ChengKeInfo,string key_check_isChange,string globalRepeatSubmitToken)
+        public string post_confirmSingleForQueue(HuoChePiao HuoChePiaoInfo,List<ChengKe> ChengKeInfo,string key_check_isChange,string globalRepeatSubmitToken)
         {
             #region 确认订单
             //存储网页返回数据
@@ -519,9 +521,9 @@ namespace test_2306.InterWork
             JObject obj_confirmSingleForQueue = (JObject)JsonConvert.DeserializeObject(html_confirmSingleForQueue);//将刚才一大串字符串转换成一个大对象
             var status2 = obj_confirmSingleForQueue["status"].ToString();
             var subsubmitStatus = obj_confirmSingleForQueue["data"]["submitStatus"].ToString();
-            if (status2 != "True") { MessageBox.Show("确认订单错误，请重试"); }
+            if (status2 != "True") {return"确认订单错误，正在重试..."; }
+            else { return "确认订单成功，正在查询购票结果..."; }
 
-            Thread.Sleep(1000);
            
 
             #endregion
@@ -559,8 +561,8 @@ namespace test_2306.InterWork
             string uri_resultOrderForDcQueue = "https://kyfw.12306.cn/otn/confirmPassenger/resultOrderForDcQueue?orderSequence_no=" + orderId + "&_json_att=&REPEAT_SUBMIT_TOKEN=" + globalRepeatSubmitToken;
             html_resultOrderForDcQueue = this.post(uri_resultOrderForDcQueue);
             JObject obj_resultOrderForDcQueue = (JObject)JsonConvert.DeserializeObject(html_resultOrderForDcQueue);//将刚才一大串字符串转换成一个大对象
-            var submitStatus_resultOrderForDcQueue = obj_resultOrderForDcQueue["data"]["submitStatus"].ToString();
-            if (submitStatus_resultOrderForDcQueue == "True") { MessageBox.Show("购票成功"); return GouPiaoChengGong = true; }
+            var obj_isAsync = obj_resultOrderForDcQueue["data"]["isAsync"].ToString();
+            if (obj_isAsync == "1") { MessageBox.Show("购票成功"); return GouPiaoChengGong = true; }
             else return GouPiaoChengGong;
            
             #endregion

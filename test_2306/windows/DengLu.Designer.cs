@@ -38,13 +38,13 @@
             this.textBox_MiMa = new System.Windows.Forms.TextBox();
             this.textBox_ShenFenZheng = new System.Windows.Forms.TextBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.textBox_text = new System.Windows.Forms.TextBox();
+            this.textBox_text_DengLuTiShi = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // ZhangHaoDengLu
             // 
-            this.ZhangHaoDengLu.Location = new System.Drawing.Point(123, 75);
+            this.ZhangHaoDengLu.Location = new System.Drawing.Point(21, 21);
             this.ZhangHaoDengLu.Name = "ZhangHaoDengLu";
             this.ZhangHaoDengLu.Size = new System.Drawing.Size(75, 23);
             this.ZhangHaoDengLu.TabIndex = 0;
@@ -54,7 +54,7 @@
             // 
             // button_ZhangHaoDengLu
             // 
-            this.button_ZhangHaoDengLu.Location = new System.Drawing.Point(190, 302);
+            this.button_ZhangHaoDengLu.Location = new System.Drawing.Point(88, 248);
             this.button_ZhangHaoDengLu.Name = "button_ZhangHaoDengLu";
             this.button_ZhangHaoDengLu.Size = new System.Drawing.Size(75, 23);
             this.button_ZhangHaoDengLu.TabIndex = 1;
@@ -64,7 +64,7 @@
             // 
             // ErWeiMaDengLu
             // 
-            this.ErWeiMaDengLu.Location = new System.Drawing.Point(244, 75);
+            this.ErWeiMaDengLu.Location = new System.Drawing.Point(142, 21);
             this.ErWeiMaDengLu.Name = "ErWeiMaDengLu";
             this.ErWeiMaDengLu.Size = new System.Drawing.Size(75, 23);
             this.ErWeiMaDengLu.TabIndex = 2;
@@ -75,7 +75,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(174, 156);
+            this.label1.Location = new System.Drawing.Point(72, 102);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(41, 12);
             this.label1.TabIndex = 5;
@@ -84,7 +84,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(174, 200);
+            this.label2.Location = new System.Drawing.Point(72, 146);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(41, 12);
             this.label2.TabIndex = 6;
@@ -93,7 +93,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(126, 238);
+            this.label3.Location = new System.Drawing.Point(24, 184);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(89, 12);
             this.label3.TabIndex = 7;
@@ -101,49 +101,49 @@
             // 
             // textBox_ZhangHaoMing
             // 
-            this.textBox_ZhangHaoMing.Location = new System.Drawing.Point(219, 147);
+            this.textBox_ZhangHaoMing.Location = new System.Drawing.Point(117, 93);
             this.textBox_ZhangHaoMing.Name = "textBox_ZhangHaoMing";
             this.textBox_ZhangHaoMing.Size = new System.Drawing.Size(100, 21);
             this.textBox_ZhangHaoMing.TabIndex = 8;
             // 
             // textBox_MiMa
             // 
-            this.textBox_MiMa.Location = new System.Drawing.Point(219, 191);
+            this.textBox_MiMa.Location = new System.Drawing.Point(117, 137);
             this.textBox_MiMa.Name = "textBox_MiMa";
             this.textBox_MiMa.Size = new System.Drawing.Size(100, 21);
             this.textBox_MiMa.TabIndex = 9;
             // 
             // textBox_ShenFenZheng
             // 
-            this.textBox_ShenFenZheng.Location = new System.Drawing.Point(219, 235);
+            this.textBox_ShenFenZheng.Location = new System.Drawing.Point(117, 181);
             this.textBox_ShenFenZheng.Name = "textBox_ShenFenZheng";
             this.textBox_ShenFenZheng.Size = new System.Drawing.Size(100, 21);
             this.textBox_ShenFenZheng.TabIndex = 10;
             // 
             // pictureBox1
             // 
-            this.pictureBox1.Location = new System.Drawing.Point(232, 147);
+            this.pictureBox1.Location = new System.Drawing.Point(21, 47);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(235, 219);
+            this.pictureBox1.Size = new System.Drawing.Size(196, 195);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBox1.TabIndex = 12;
             this.pictureBox1.TabStop = false;
             // 
-            // textBox_text
+            // textBox_text_DengLuTiShi
             // 
-            this.textBox_text.Location = new System.Drawing.Point(1, 388);
-            this.textBox_text.Multiline = true;
-            this.textBox_text.Name = "textBox_text";
-            this.textBox_text.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.textBox_text.Size = new System.Drawing.Size(689, 261);
-            this.textBox_text.TabIndex = 13;
+            this.textBox_text_DengLuTiShi.Location = new System.Drawing.Point(0, 277);
+            this.textBox_text_DengLuTiShi.Multiline = true;
+            this.textBox_text_DengLuTiShi.Name = "textBox_text_DengLuTiShi";
+            this.textBox_text_DengLuTiShi.ScrollBars = System.Windows.Forms.ScrollBars.Both;
+            this.textBox_text_DengLuTiShi.Size = new System.Drawing.Size(234, 58);
+            this.textBox_text_DengLuTiShi.TabIndex = 13;
             // 
             // DengLu
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(688, 651);
-            this.Controls.Add(this.textBox_text);
+            this.ClientSize = new System.Drawing.Size(234, 334);
+            this.Controls.Add(this.textBox_text_DengLuTiShi);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.textBox_ShenFenZheng);
             this.Controls.Add(this.textBox_MiMa);
@@ -175,6 +175,6 @@
         public System.Windows.Forms.TextBox textBox_MiMa;
         public System.Windows.Forms.TextBox textBox_ShenFenZheng;
         private System.Windows.Forms.PictureBox pictureBox1;
-        private System.Windows.Forms.TextBox textBox_text;
+        private System.Windows.Forms.TextBox textBox_text_DengLuTiShi;
     }
 }
