@@ -52,6 +52,12 @@
     <Compile Include="data\ChengKe.cs" />
     <Compile Include="data\HuoChePiao.cs" />
     <Compile Include="InterWork\inter.cs" />
+    <Compile Include="windows\BangDingYouXiangForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="windows\BangDingYouXiangForm.Designer.cs">
+      <DependentUpon>BangDingYouXiangForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="windows\DengLu.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -78,6 +84,9 @@
     <Compile Include="windows\YanZhengMa.Designer.cs">
       <DependentUpon>YanZhengMa.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="windows\BangDingYouXiangForm.resx">
+      <DependentUpon>BangDingYouXiangForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="windows\DengLu.resx">
       <DependentUpon>DengLu.cs</DependentUpon>
     </EmbeddedResource>

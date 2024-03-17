@@ -28,28 +28,15 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.ListViewItem listViewItem1 = new System.Windows.Forms.ListViewItem(new string[] {
-            "123",
-            "1234",
-            ""}, -1);
             this.DengLu = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.dateTimePicker_ChuFaShiJian = new System.Windows.Forms.DateTimePicker();
-            this.dateTimePicker_FanHuiShiJian = new System.Windows.Forms.DateTimePicker();
-            this.textBox_MuDiDi = new System.Windows.Forms.TextBox();
-            this.textBox_ChuFaDi = new System.Windows.Forms.TextBox();
-            this.ChaXun = new System.Windows.Forms.Button();
-            this.listView1 = new System.Windows.Forms.ListView();
             this.button_ZhuXiao = new System.Windows.Forms.Button();
             this.button_QiangPiao = new System.Windows.Forms.Button();
+            this.button_BangDingYouXiang = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // DengLu
             // 
-            this.DengLu.Location = new System.Drawing.Point(14, 12);
+            this.DengLu.Location = new System.Drawing.Point(24, 12);
             this.DengLu.Name = "DengLu";
             this.DengLu.Size = new System.Drawing.Size(75, 23);
             this.DengLu.TabIndex = 4;
@@ -57,96 +44,9 @@
             this.DengLu.UseVisualStyleBackColor = true;
             this.DengLu.Click += new System.EventHandler(this.DengLu_Click);
             // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 54);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(65, 12);
-            this.label1.TabIndex = 6;
-            this.label1.Text = "出发时间：";
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(12, 75);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(65, 12);
-            this.label2.TabIndex = 7;
-            this.label2.Text = "返回时间：";
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(187, 51);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(53, 12);
-            this.label3.TabIndex = 8;
-            this.label3.Text = "目标地点";
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(186, 17);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(53, 12);
-            this.label4.TabIndex = 9;
-            this.label4.Text = "起始地点";
-            // 
-            // dateTimePicker_ChuFaShiJian
-            // 
-            this.dateTimePicker_ChuFaShiJian.Location = new System.Drawing.Point(71, 48);
-            this.dateTimePicker_ChuFaShiJian.Name = "dateTimePicker_ChuFaShiJian";
-            this.dateTimePicker_ChuFaShiJian.Size = new System.Drawing.Size(110, 21);
-            this.dateTimePicker_ChuFaShiJian.TabIndex = 10;
-            this.dateTimePicker_ChuFaShiJian.ValueChanged += new System.EventHandler(this.dateTimePicker_ChuFaShiJian_ValueChanged);
-            // 
-            // dateTimePicker_FanHuiShiJian
-            // 
-            this.dateTimePicker_FanHuiShiJian.Location = new System.Drawing.Point(71, 72);
-            this.dateTimePicker_FanHuiShiJian.Name = "dateTimePicker_FanHuiShiJian";
-            this.dateTimePicker_FanHuiShiJian.Size = new System.Drawing.Size(110, 21);
-            this.dateTimePicker_FanHuiShiJian.TabIndex = 11;
-            // 
-            // textBox_MuDiDi
-            // 
-            this.textBox_MuDiDi.Location = new System.Drawing.Point(242, 48);
-            this.textBox_MuDiDi.Name = "textBox_MuDiDi";
-            this.textBox_MuDiDi.Size = new System.Drawing.Size(99, 21);
-            this.textBox_MuDiDi.TabIndex = 12;
-            // 
-            // textBox_ChuFaDi
-            // 
-            this.textBox_ChuFaDi.Location = new System.Drawing.Point(242, 14);
-            this.textBox_ChuFaDi.Name = "textBox_ChuFaDi";
-            this.textBox_ChuFaDi.Size = new System.Drawing.Size(99, 21);
-            this.textBox_ChuFaDi.TabIndex = 13;
-            // 
-            // ChaXun
-            // 
-            this.ChaXun.Location = new System.Drawing.Point(213, 72);
-            this.ChaXun.Name = "ChaXun";
-            this.ChaXun.Size = new System.Drawing.Size(75, 23);
-            this.ChaXun.TabIndex = 14;
-            this.ChaXun.Text = "查询";
-            this.ChaXun.UseVisualStyleBackColor = true;
-            this.ChaXun.Click += new System.EventHandler(this.ChaXun_Click);
-            // 
-            // listView1
-            // 
-            this.listView1.HideSelection = false;
-            this.listView1.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
-            listViewItem1});
-            this.listView1.Location = new System.Drawing.Point(-2, 99);
-            this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(343, 155);
-            this.listView1.TabIndex = 15;
-            this.listView1.UseCompatibleStateImageBehavior = false;
-            this.listView1.View = System.Windows.Forms.View.Details;
-            // 
             // button_ZhuXiao
             // 
-            this.button_ZhuXiao.Location = new System.Drawing.Point(14, 12);
+            this.button_ZhuXiao.Location = new System.Drawing.Point(24, 12);
             this.button_ZhuXiao.Name = "button_ZhuXiao";
             this.button_ZhuXiao.Size = new System.Drawing.Size(75, 23);
             this.button_ZhuXiao.TabIndex = 16;
@@ -156,7 +56,7 @@
             // 
             // button_QiangPiao
             // 
-            this.button_QiangPiao.Location = new System.Drawing.Point(106, 12);
+            this.button_QiangPiao.Location = new System.Drawing.Point(24, 100);
             this.button_QiangPiao.Name = "button_QiangPiao";
             this.button_QiangPiao.Size = new System.Drawing.Size(75, 23);
             this.button_QiangPiao.TabIndex = 17;
@@ -164,46 +64,37 @@
             this.button_QiangPiao.UseVisualStyleBackColor = true;
             this.button_QiangPiao.Click += new System.EventHandler(this.button_QiangPiao_Click);
             // 
+            // button_BangDingYouXiang
+            // 
+            this.button_BangDingYouXiang.Location = new System.Drawing.Point(12, 56);
+            this.button_BangDingYouXiang.Name = "button_BangDingYouXiang";
+            this.button_BangDingYouXiang.Size = new System.Drawing.Size(96, 23);
+            this.button_BangDingYouXiang.TabIndex = 18;
+            this.button_BangDingYouXiang.Text = "绑定邮箱";
+            this.button_BangDingYouXiang.UseVisualStyleBackColor = true;
+            this.button_BangDingYouXiang.Click += new System.EventHandler(this.button_BangDingYouXiang_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(345, 258);
+            this.ClientSize = new System.Drawing.Size(120, 135);
+            this.Controls.Add(this.button_BangDingYouXiang);
             this.Controls.Add(this.button_QiangPiao);
             this.Controls.Add(this.button_ZhuXiao);
-            this.Controls.Add(this.listView1);
-            this.Controls.Add(this.ChaXun);
-            this.Controls.Add(this.textBox_ChuFaDi);
-            this.Controls.Add(this.textBox_MuDiDi);
-            this.Controls.Add(this.dateTimePicker_FanHuiShiJian);
-            this.Controls.Add(this.dateTimePicker_ChuFaShiJian);
-            this.Controls.Add(this.label4);
-            this.Controls.Add(this.label3);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.label1);
             this.Controls.Add(this.DengLu);
             this.Name = "Form1";
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
         #endregion
         public System.Windows.Forms.Button DengLu;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.DateTimePicker dateTimePicker_ChuFaShiJian;
-        private System.Windows.Forms.DateTimePicker dateTimePicker_FanHuiShiJian;
-        private System.Windows.Forms.TextBox textBox_MuDiDi;
-        private System.Windows.Forms.TextBox textBox_ChuFaDi;
-        private System.Windows.Forms.Button ChaXun;
-        private System.Windows.Forms.ListView listView1;
         public System.Windows.Forms.Button button_ZhuXiao;
         private System.Windows.Forms.Button button_QiangPiao;
+        public System.Windows.Forms.Button button_BangDingYouXiang;
     }
 }
 

@@ -72,7 +72,7 @@ namespace test_2306.windows
                 pictureBox1.Visible = true;
                 textBox_text_DengLuTiShi.Visible = true;
             }
-            catch { MessageBox.Show("二维码获取失败，请重新获取"); }
+            catch { MessageBox.Show("二维码获取失败，请重新获取或更换登陆方式"); }
             
 
             string html_checkqr = null;

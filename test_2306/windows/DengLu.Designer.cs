@@ -54,7 +54,7 @@
             // 
             // button_ZhangHaoDengLu
             // 
-            this.button_ZhangHaoDengLu.Location = new System.Drawing.Point(88, 248);
+            this.button_ZhangHaoDengLu.Location = new System.Drawing.Point(74, 208);
             this.button_ZhangHaoDengLu.Name = "button_ZhangHaoDengLu";
             this.button_ZhangHaoDengLu.Size = new System.Drawing.Size(75, 23);
             this.button_ZhangHaoDengLu.TabIndex = 1;
@@ -122,7 +122,7 @@
             // 
             // pictureBox1
             // 
-            this.pictureBox1.Location = new System.Drawing.Point(21, 47);
+            this.pictureBox1.Location = new System.Drawing.Point(21, 64);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(196, 195);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
