@@ -62,8 +62,10 @@ namespace test_2306.windows
 
         private void QiangPiao_Task()
         {
+            int ChaXunCiShu = 0;
             ChengKeSureInfos.Clear();
             SeatTypesSure.Clear();
+            frm.inter_Form1.SetForm(this);
             try
             {
                 //获取选择的乘车人
@@ -89,14 +91,16 @@ namespace test_2306.windows
                     foreach (var st in SeatTypes_BianMa)
                     {
                         SeatTypesSure.Add(st);
+                      
                     }
+                    seatTypeSureCount = SeatTypesSure.Count;
                 }
                 #region 获取火车票信息
                 string FormAddress = frm.ZhanTai[textBox_ChuFaDi.Text];
                 string ToAddress = frm.ZhanTai[textBox_MuDiDi.Text];
                 string Time = dateTimePicker_ChuFaShiJian.Value.ToString("yyyy-MM-dd");
                 List_HuoChePiao = frm.inter_Form1.post_queryE(FormAddress, ToAddress, Time);
-
+                if (List_HuoChePiao.Count < 1) { MessageBox.Show("没有火车票可以购买，请重新选择！！！"); return; }
                 #endregion
                 while (!GouPiaoChengGong)
                 {
@@ -107,14 +111,23 @@ namespace test_2306.windows
                         HuoChePiao HuoCheInfo = List_HuoChePiao[i];
                         //判断当前火车票能否预定
                         if (HuoCheInfo.KeFouYuDing == "NO") continue;
-                        //开始买票
+                        //开始买这一趟火车的不同座位票
                         for (int j = 0; j < SeatTypesSure.Count; j++)
                         {
+                            ChaXunCiShu++;
                             HuoCheInfo.SetSeat_Type(SeatTypesSure[j]);
 
                             #region 查询登陆状态
                             bool DengLuQueRen = frm.inter_Form1.post_checkUser();
-                            if (!DengLuQueRen) {  return; }
+                            if (!DengLuQueRen)
+                            {
+                                if (ChaXunCiShu == 1) return;
+                                else
+                                {
+                                    Thread.Sleep(300);
+                                    break;
+                                }
+                            }
                             #endregion
                             #region 预定火车票
                             string SecretStr = HuoCheInfo.BianMa;
@@ -138,8 +151,29 @@ namespace test_2306.windows
                             frm.inter_Form1.post_getPassengerDTOs(globalRepeatSubmitToken);
                             #endregion
                             #region 检查乘车人信息
-                            bool obj_checkorderInfo = frm.inter_Form1.post_checkorderInfo(HuoCheInfo, ChengKeSureInfos, globalRepeatSubmitToken);
-                            if (!obj_checkorderInfo) { textBox_XinXiTiShi.AppendText(DateTime.Now.ToString() + "乘客信息上传错误，请检查是否选择乘客...." + "\r\n"); return; }
+                            int obj_checkorderInfo = frm.inter_Form1.post_checkorderInfo(HuoCheInfo, ChengKeSureInfos, globalRepeatSubmitToken);
+                            switch(obj_checkorderInfo)
+                            {
+                                case 0: textBox_XinXiTiShi.AppendText(DateTime.Now.ToString() + "乘客信息上传错误，请检查是否选择乘客...." + "\r\n"); return;
+                                case 1: textBox_XinXiTiShi.AppendText(DateTime.Now.ToString() + "乘客信息上传成功...." + "\r\n"); break;
+                                case 2:
+                                    {
+                                        if (seatTypeSureCount > 1)
+                                        {
+                                            textBox_XinXiTiShi.AppendText(DateTime.Now.ToString() + "乘车人数量大于剩余票数,正在尝试其他类型车票...." + "\r\n"); continue;
+                                        }
+                                        else
+                                        {
+                                            textBox_XinXiTiShi.AppendText(DateTime.Now.ToString() + "乘车人数量大于剩余票数,请增加可选择的座位类型...." + "\r\n");
+                                            seatTypeSureCount--;
+                                            return;
+
+                                        }
+                                    }
+                                default:break;
+                            }
+                            
+
                             #endregion
                             #region 提交订单，获取订单实际情况
                             string FromAddressBianMa = frm.ZhanTai[textBox_ChuFaDi.Text];
@@ -150,10 +184,15 @@ namespace test_2306.windows
                             else { textBox_XinXiTiShi.AppendText(DateTime.Now.ToString() + "提交订单失败，正在重试..." + "\r\n");continue; }
                             #endregion
                             #region 确认订单
-                            var obj_confirmSingleForQueue = frm.inter_Form1.post_confirmSingleForQueue(HuoCheInfo, ChengKeSureInfos, key_check_isChange, globalRepeatSubmitToken);
-                            if (obj_confirmSingleForQueue) { textBox_XinXiTiShi.AppendText(DateTime.Now.ToString() + "扣票成功，正在查询购票结果..." + "\r\n"); }
-                            else { textBox_XinXiTiShi.AppendText(DateTime.Now.ToString() + "扣票失败，正在重试..." + "\r\n");}
+                            int obj_confirmSingleForQueue = frm.inter_Form1.post_confirmSingleForQueue(HuoCheInfo, ChengKeSureInfos, key_check_isChange, globalRepeatSubmitToken);
                             
+                            switch(obj_confirmSingleForQueue)
+                            {
+                                case 0: textBox_XinXiTiShi.AppendText(DateTime.Now.ToString() + "扣票失败，正在重新尝试购买其他类型火车票..." + "\r\n"); break;
+                                case 1: textBox_XinXiTiShi.AppendText(DateTime.Now.ToString() + "扣票成功，正在查询购票结果..." + "\r\n");break;
+                                case 2: textBox_XinXiTiShi.AppendText(DateTime.Now.ToString() + "扣票失败，正在重试..." + "\r\n"); break;
+                                default: break;
+                            }
                             #endregion
                             #region 等待购票结果
                             string orderId = frm.inter_Form1.post_queryOrderWaitTime(globalRepeatSubmitToken);
@@ -167,14 +206,17 @@ namespace test_2306.windows
                             #endregion
                             Thread.Sleep(500);
                         }
-                        break;
-
+                        if (GouPiaoChengGong) {break; }
                     }
 
                 }
+                if(frm.BangDingFlag)
+                {
+                    string FaSongYouJian = frm.inter_Form1.SendMailLocalhost(frm.YouXiang, frm.YouXiangMiMa, frm.YouXiang);
+                    textBox_XinXiTiShi.AppendText(DateTime.Now.ToString() + FaSongYouJian + "\r\n");
+                }
                 //使用邮箱获取抢票结果
-                string FaSongYouJian= frm.inter_Form1.SendMailLocalhost(frm.YouXiang, frm.YouXiangMiMa,frm.YouXiang);
-                textBox_XinXiTiShi.AppendText(DateTime.Now.ToString() + FaSongYouJian + "\r\n");
+                
             }
             catch
             {

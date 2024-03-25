@@ -51,6 +51,12 @@
   <ItemGroup>
     <Compile Include="data\ChengKe.cs" />
     <Compile Include="data\HuoChePiao.cs" />
+    <Compile Include="InterWork\ErrInfo.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="InterWork\ErrInfo.Designer.cs">
+      <DependentUpon>ErrInfo.cs</DependentUpon>
+    </Compile>
     <Compile Include="InterWork\inter.cs" />
     <Compile Include="windows\BangDingYouXiangForm.cs">
       <SubType>Form</SubType>
@@ -84,6 +90,9 @@
     <Compile Include="windows\YanZhengMa.Designer.cs">
       <DependentUpon>YanZhengMa.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="InterWork\ErrInfo.resx">
+      <DependentUpon>ErrInfo.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="windows\BangDingYouXiangForm.resx">
       <DependentUpon>BangDingYouXiangForm.cs</DependentUpon>
     </EmbeddedResource>

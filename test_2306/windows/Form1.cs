@@ -109,7 +109,7 @@ namespace test_2306
                 string html_query = inter_Form1.post(uri_query);
                 JObject obj_query = (JObject)JsonConvert.DeserializeObject(html_query);//将刚才一大串字符串转换成一个大对象
                 var normal_passengers = obj_query["data"]["datas"];
-
+                List_ChengKes.Clear();
                 foreach (var passenger in normal_passengers)
                 {
                     ChengKe ck = new ChengKe();
@@ -121,7 +121,8 @@ namespace test_2306
                     List_ChengKes.Add(ck);
                 }
                 QiangPiao1 = new QiangPiao(this);
-                QiangPiao1.ShowDialog();
+                QiangPiao1.Show();
+                
             }catch
             {
                 MessageBox.Show("请登陆后再抢票");

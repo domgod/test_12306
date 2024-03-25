@@ -149,7 +149,8 @@
             this.textBox_XinXiTiShi.Location = new System.Drawing.Point(218, 71);
             this.textBox_XinXiTiShi.Multiline = true;
             this.textBox_XinXiTiShi.Name = "textBox_XinXiTiShi";
-            this.textBox_XinXiTiShi.Size = new System.Drawing.Size(176, 333);
+            this.textBox_XinXiTiShi.ScrollBars = System.Windows.Forms.ScrollBars.Both;
+            this.textBox_XinXiTiShi.Size = new System.Drawing.Size(153, 333);
             this.textBox_XinXiTiShi.TabIndex = 29;
             // 
             // label6
@@ -165,7 +166,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(394, 404);
+            this.ClientSize = new System.Drawing.Size(372, 404);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.textBox_XinXiTiShi);
             this.Controls.Add(this.checkedListBox_SeatType);
@@ -202,7 +203,7 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.CheckedListBox checkedListBox_ChengKe;
         private System.Windows.Forms.CheckedListBox checkedListBox_SeatType;
-        private System.Windows.Forms.TextBox textBox_XinXiTiShi;
+        public System.Windows.Forms.TextBox textBox_XinXiTiShi;
         private System.Windows.Forms.Label label6;
     }
 }

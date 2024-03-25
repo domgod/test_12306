@@ -11,11 +11,14 @@ using System.Windows.Forms;
 using test_2306.data;
 using System.Threading;
 using System.Net.Mail;
+using test_2306.windows;
+using System.Drawing;
 
 namespace test_2306.InterWork
 {
     public class inter
     {
+        public QiangPiao frm1;
         int UserAgentInfoIndex;
         CookieContainer cookieContainer;
         string[] UserAgentInfos = new string[]
@@ -28,17 +31,29 @@ namespace test_2306.InterWork
             "Mozilla/5.0 (Windows NT 6.3; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.70 Safari/537.36"
         };
 
+        public void SetForm(QiangPiao frm)
+        {
+            this.frm1 = frm;
+        }
+
+        public void Form(QiangPiao frm)
+        {
+            this.frm1 = frm;
+        }
 
         public inter()
         {
             Random rd = new Random();
             UserAgentInfoIndex = rd.Next(0, 5);
+            
         }
         public inter(CookieContainer cookieContainer)
         {
             this.cookieContainer = cookieContainer;
             Random rd = new Random();
             UserAgentInfoIndex = rd.Next(0, 5);
+            
+
 
         }
 
@@ -405,7 +420,10 @@ namespace test_2306.InterWork
         }
 
         //检查选票人信息
-        public bool post_checkorderInfo(HuoChePiao HuoChePiaoInfo, List<ChengKe> ChengKeInfo, string globalRepeatSubmitToken)
+        //返回0为失败
+        //返回1表示成功
+        //返回3表示乘车人数量大于剩余票数/余票不足
+        public int post_checkorderInfo(HuoChePiao HuoChePiaoInfo, List<ChengKe> ChengKeInfo, string globalRepeatSubmitToken)
         {
             string html_checkorderInfo = null;
             string uri_checkOrderInfo_1 = "https://kyfw.12306.cn/otn/confirmPassenger/checkOrderInfo?cancel_flag=2&bed_level_order_num=000000000000000000000000000000";
@@ -450,18 +468,30 @@ namespace test_2306.InterWork
 
                 uri_checkorderInfo_5 = "&tour_flag=dc&whatsSelect=1&sessionId=&sig=&scene=nc_login&_json_att=&REPEAT_SUBMIT_TOKEN=" + globalRepeatSubmitToken;
                 string uri_checkorderInfo = uri_checkOrderInfo_1 + uri_checkOrderInfo_6 + uri_checkOrderInfo_4 + uri_checkorderInfo_5;
-                Thread.Sleep(900);
+                Thread.Sleep(1000);
                 html_checkorderInfo = this.post1(uri_checkorderInfo);
+                //查看返回是否有错误信息提示
+                var errMsgIndex= html_checkorderInfo.IndexOf("errMsg");
+                //int obj_Err = html_checkorderInfo.IndexOf("本次列车");
                 JObject obj_checkorderInfo = (JObject)JsonConvert.DeserializeObject(html_checkorderInfo);//将刚才一大串字符串转换成一个大对象
                 var obj_submitStatus = obj_checkorderInfo["data"]["submitStatus"].ToString();
-                if (obj_submitStatus != "True") { return false; }
-                else { return true; }
+                if (obj_submitStatus == "True") { return 1; }
+                else
+                {
+                    if (errMsgIndex != -1)
+                    {
+                        frm1.textBox_XinXiTiShi.AppendText(DateTime.Now.ToString() + obj_checkorderInfo["data"]["errMsg"].ToString()+"\r\n");
+
+                        return 2; 
+                    }
+                    else { return 0; }
+                }
             }
 
             catch
             {
                 Thread thread = new Thread(() => { MessageBox.Show(html_checkorderInfo); });
-                return false;
+                return 0;
             }
         }
 
@@ -531,7 +561,10 @@ namespace test_2306.InterWork
         }
 
         //确认订单
-        public bool post_confirmSingleForQueue(HuoChePiao HuoChePiaoInfo, List<ChengKe> ChengKeInfo, string key_check_isChange, string globalRepeatSubmitToken)
+        //返回1 扣票成功
+        //返回0，访问网站错误
+        //返回2，扣票成功，重新尝试
+        public int post_confirmSingleForQueue(HuoChePiao HuoChePiaoInfo, List<ChengKe> ChengKeInfo, string key_check_isChange, string globalRepeatSubmitToken)
         {
             //存储网页返回数据
             string html_confirmSingleForQueue = null;
@@ -583,20 +616,32 @@ namespace test_2306.InterWork
 
                 uri_confirmSingleForQueue5 = "&purpose_codes=00&key_check_isChange=" + key_check_isChange + "&leftTicketStr=" + HuoChePiaoInfo.leftTicket + "&train_location=" + HuoChePiaoInfo.train_location + "&choose_seats=&seatDetailType=000&is_jy=N&is_cj=Y&encryptedData=&whatsSelect=1&roomType=00&dwAll=N&_json_att=&REPEAT_SUBMIT_TOKEN=" + globalRepeatSubmitToken;
                 string uri_confirmSingleForQueue = uri_confirmSingleForQueue1 + uri_confirmSingleForQueue2 + uri_confirmSingleForQueue4 + uri_confirmSingleForQueue5;
-                Thread.Sleep(200);
+                Thread.Sleep(1500);
                 html_confirmSingleForQueue = this.post(uri_confirmSingleForQueue);
+                int index_confirmSingleForQueue = html_confirmSingleForQueue.IndexOf("扣票失败");
+
                 JObject obj_confirmSingleForQueue = (JObject)JsonConvert.DeserializeObject(html_confirmSingleForQueue);//将刚才一大串字符串转换成一个大对象
                 var status2 = obj_confirmSingleForQueue["status"].ToString();
-                var subsubmitStatus = obj_confirmSingleForQueue["data"]["submitStatus"].ToString();
-                if (status2 != "True") { return false; /*"确认订单错误，正在重试..."*/}
-                else { return true; /*"确认订单成功，正在查询购票结果...";*/ }
+               // var subsubmitStatus = obj_confirmSingleForQueue["data"]["submitStatus"].ToString();
+                if (status2 == "True") { return 1; /*"确认订单错误，正在重试..."*//*"确认订单成功，正在查询购票结果...";*/}
+                else
+                {
+                    if (index_confirmSingleForQueue == -1)
+                    {
+                        return 0;
+                    }
+                    else
+                    {
+                        return 2;
+                    }
+                }
 
                 #endregion
             }
             catch
             {
                 Thread thread = new Thread(() => { MessageBox.Show(html_confirmSingleForQueue); });
-                return false;/* "确认订单错误"*/
+                return 0;/* "确认订单错误"*/
             }
         }
 
@@ -642,12 +687,24 @@ namespace test_2306.InterWork
                 #region 获取订单结果
 
                 string uri_resultOrderForDcQueue = "https://kyfw.12306.cn/otn/confirmPassenger/resultOrderForDcQueue?orderSequence_no=" + orderId + "&_json_att=&REPEAT_SUBMIT_TOKEN=" + globalRepeatSubmitToken;
-                Thread.Sleep(200);
+                Thread.Sleep(1000);
                 html_resultOrderForDcQueue = this.post(uri_resultOrderForDcQueue);
+                var ErrMsgIndex = html_resultOrderForDcQueue.IndexOf("errMsg");
                 JObject obj_resultOrderForDcQueue = (JObject)JsonConvert.DeserializeObject(html_resultOrderForDcQueue);//将刚才一大串字符串转换成一个大对象
-                var obj_isAsync = obj_resultOrderForDcQueue["data"]["isAsync"].ToString();
-                if (obj_isAsync == "1") {  return GouPiaoChengGong = true; }
+                
+                if( ErrMsgIndex == -1 && obj_resultOrderForDcQueue["data"]["submitSAtatus"].ToString()=="True") 
+                {
+                     return GouPiaoChengGong = true; 
+                    
+                }
+                if ((ErrMsgIndex != -1) && obj_resultOrderForDcQueue["data"]["errMsg"].ToString().IndexOf("继续支付")!=-1)
+                {
+                    frm1.textBox_XinXiTiShi.AppendText(DateTime.Now.ToString() + obj_resultOrderForDcQueue["data"]["errMsg"].ToString()+"\r\n");
+                    return GouPiaoChengGong = true;
+                }
                 else return GouPiaoChengGong;
+
+                
 
                 #endregion
             }
@@ -673,6 +730,52 @@ namespace test_2306.InterWork
             mailMessage.Subject = "12306抢票软件通知";
             //邮件内容。
             mailMessage.Body = "您的火车票已抢到，请在十分钟之内登陆12306app进行付款，逾期火车票将自动失效！！！";
+            //是否支持内容为HTML。
+            //mailMessage.IsBodyHtml = true;
+            //实例化一个SmtpClient类。
+            SmtpClient client = new SmtpClient();
+            client.Port = 587;
+            //在这里使用的是qq邮箱，所以是smtp.qq.com，如果你使用的是126邮箱，那么就是smtp.126.com。
+            //client.Host = "smtp.163.com";
+            client.Host = "smtp.qq.com";
+            //使用安全加密连接（是否启用SSL）
+            client.EnableSsl = true;
+            //设置超时时间
+            //client.Timeout = 10000;
+            //不和请求一块发送。
+            client.UseDefaultCredentials = false;
+            //验证发件人身份(发件人的邮箱，邮箱里的生成授权码);
+            client.Credentials = new NetworkCredential(FromEmain, pwd);//szcodirtgvjgbfii
+            //网易邮箱客户端授权码DJURBEKTXEWXQATX
+            //client.Credentials = new NetworkCredential("liulijun3236@163.com", "ZAJDNCKWHUBHQIMY");
+            try
+            {
+                //发送
+                client.Send(mailMessage);
+                return "发送成功";
+                //发送成功
+            }
+            catch (Exception)//发送异常
+            {
+                return "发送失败";
+                //发送失败
+                //System.IO.File.WriteAllText(@"C:\test.txt", e.ToString(), Encoding.UTF8);
+            }
+        }
+        public string SendMailInfo(string FromEmain, string pwd, string ToEmail,string info)
+        {
+            //实例化一个发送邮件类。
+            MailMessage mailMessage = new MailMessage();
+            //发件人邮箱地址，方法重载不同，可以根据需求自行选择。
+            mailMessage.From = new MailAddress(FromEmain);
+            //收件人邮箱地址。
+            mailMessage.To.Add(new MailAddress(ToEmail));
+            //抄送人邮箱地址。
+            //mailMessage.CC.Add(sender);
+            //邮件标题。
+            mailMessage.Subject = "12306抢票软件通知";
+            //邮件内容。
+            mailMessage.Body = info;
             //是否支持内容为HTML。
             //mailMessage.IsBodyHtml = true;
             //实例化一个SmtpClient类。

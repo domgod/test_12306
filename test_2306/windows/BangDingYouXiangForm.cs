@@ -29,6 +29,8 @@ namespace test_2306.windows
             frm.YouXiangMiMa=textBox_MiMa.Text;
             frm.BangDingFlag=true;
             frm.button_BangDingYouXiang.Text = "修改绑定邮箱";
+            frm.BangDingFlag = true;
+            frm.inter_Form1.SendMailInfo(frm.YouXiang,frm.YouXiangMiMa,frm.YouXiang,"邮箱绑定成功!!!!");
             this.Close();
 
         }
