@@ -42,7 +42,7 @@ namespace test_2306.windows
         {
             pictureBox1.Visible = false;
             textBox_text_DengLuTiShi.Visible = false;
-            textBox_text_DengLuTiShi.Text = "请使用12306app扫描二维码登陆";
+            
 
             inter1 = frm.inter_Form1;
         }
@@ -56,6 +56,7 @@ namespace test_2306.windows
 
         private  void ErWeiMaDengLu_Click(object sender, EventArgs e)
         {
+            textBox_text_DengLuTiShi.Text = "请使用12306app扫描二维码登陆";
             string uuid=null;
             try {
                 var html2 = inter1.post("https://kyfw.12306.cn/passport/web/create-qr64?appid=otn");
@@ -135,11 +136,14 @@ namespace test_2306.windows
         {
             Thread thread = new Thread(() =>
             {
+                string html_err = null;
+                int Err_CiShu = 3;
                 try
                 {
+                    textBox_text_DengLuTiShi.Text = "正在登陆，请稍后...";
                     string url = "https://kyfw.12306.cn/passport/web/checkLoginVerify?username=" + textBox_ZhangHaoMing.Text.ToString() + "&appid=otn";
                     string html_2 = inter1.post(url);
-                    MessageBox.Show(html_2);
+                    //MessageBox.Show(html_2);
 
                     while (true)
                     {
@@ -148,9 +152,11 @@ namespace test_2306.windows
                         string uri = "https://kyfw.12306.cn/passport/web/getMessageCode?appid=otn&username=" + textBox_ZhangHaoMing.Text + "&castNum=" + textBox_ShenFenZheng.Text;
                         string html = string.Empty;
                         html = inter1.post(uri);
+                        
                         JObject obj1 = (JObject)JsonConvert.DeserializeObject(html);//将刚才一大串字符串转换成一个大对象
                         string result_code = obj1["result_code"].ToString();
                         string result_message = obj1["result_message"].ToString();
+                        html_err= result_message;
                         if (result_code == "0")
                         {
                             var form3 = new YanZhengMa(this);
@@ -158,21 +164,26 @@ namespace test_2306.windows
                             form3.ShowDialog();
                             break;
                         }
+                        Err_CiShu++;
+                        if(Err_CiShu > 3) { MessageBox.Show(html_err);return; }
                     }
 
                     //登陆网站
                     string uri2 = "https://kyfw.12306.cn/passport/web/login?sessionId=&sig=&if_check_slide_passcode_token=&scene=&checkMode=0&randCode=" + randCode + "&username=" + textBox_ZhangHaoMing.Text + "&password=" + textBox_MiMa.Text + "&appid=otn";
                     var html2 = inter1.post(uri2);
+                    html_err = html2;
                     JObject obj2 = (JObject)JsonConvert.DeserializeObject(html2);//将刚才一大串字符串转换成一个大对象
                     if (obj2["uamtk"] == null) MessageBox.Show("登陆出错\r\n" + html2);
                     string uamtk = obj2["uamtk"].ToString();
                     string uri3 = "https://kyfw.12306.cn/passport/web/auth/uamtk?appid=otn";
                     var html3 = inter1.post(uri3);
+                    html_err = html3;
                     JObject obj3 = (JObject)JsonConvert.DeserializeObject(html3);//将刚才一大串字符串转换成一个大对象
                     if (obj3["newapptk"] == null) MessageBox.Show("登陆出错\r\n" + html3);
                     string newapptk = obj3["newapptk"].ToString();
                     string uri4 = "https://kyfw.12306.cn/otn/uamauthclient?tk=" + newapptk;
                     string html4 = inter1.post1(uri4);
+                    html_err = html4;
                     JObject obj4 = (JObject)JsonConvert.DeserializeObject(html4);//将刚才一大串字符串转换成一个大对象
                     string result4_message = obj4["result_message"].ToString();
                     string username = obj4["username"].ToString();
@@ -184,6 +195,8 @@ namespace test_2306.windows
                 catch
                 {
                     MessageBox.Show("登陆出错，请重新登陆");
+                    MessageBox.Show(html_err);
+                    textBox_text_DengLuTiShi.Clear();
                     this.Close();
                 }
                 

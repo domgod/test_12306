@@ -112,6 +112,7 @@
             this.textBox_MiMa.Name = "textBox_MiMa";
             this.textBox_MiMa.Size = new System.Drawing.Size(100, 21);
             this.textBox_MiMa.TabIndex = 9;
+            this.textBox_MiMa.UseSystemPasswordChar = true;
             // 
             // textBox_ShenFenZheng
             // 
@@ -122,7 +123,7 @@
             // 
             // pictureBox1
             // 
-            this.pictureBox1.Location = new System.Drawing.Point(21, 64);
+            this.pictureBox1.Location = new System.Drawing.Point(21, 50);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(196, 195);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;

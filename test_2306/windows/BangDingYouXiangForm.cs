@@ -25,13 +25,21 @@ namespace test_2306.windows
 
         private void button_BangDing_Click(object sender, EventArgs e)
         {
-            frm.YouXiang=textBox_YouXiang.Text;
-            frm.YouXiangMiMa=textBox_MiMa.Text;
-            frm.BangDingFlag=true;
-            frm.button_BangDingYouXiang.Text = "修改绑定邮箱";
-            frm.BangDingFlag = true;
-            frm.inter_Form1.SendMailInfo(frm.YouXiang,frm.YouXiangMiMa,frm.YouXiang,"邮箱绑定成功!!!!");
-            this.Close();
+            try
+            {
+                frm.YouXiang = textBox_YouXiang.Text;
+                frm.YouXiangMiMa = textBox_MiMa.Text;
+                frm.BangDingFlag = true;
+                frm.button_BangDingYouXiang.Text = "修改绑定邮箱";
+                frm.BangDingFlag = true;
+                frm.inter_Form1.SendMailInfo(frm.YouXiang, frm.YouXiangMiMa, frm.YouXiang, "邮箱绑定成功!!!!");
+                this.Close();
+            }
+            catch
+            {
+                MessageBox.Show("绑定失败，请检查授权码是否正确");
+            }
+           
 
         }
     }
